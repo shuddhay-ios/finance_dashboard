@@ -1,19 +1,15 @@
-import AccountBalanceWalletOutlinedIcon from '@mui/icons-material/AccountBalanceWalletOutlined';
 import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import InsightsOutlinedIcon from '@mui/icons-material/InsightsOutlined';
 import LogoutIcon from '@mui/icons-material/Logout';
-import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import ManageAccountsOutlinedIcon from '@mui/icons-material/ManageAccountsOutlined';
 import MenuIcon from '@mui/icons-material/Menu';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import ReceiptLongOutlinedIcon from '@mui/icons-material/ReceiptLongOutlined';
-import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import {
   Avatar,
   Box,
   ButtonBase,
-  Chip,
   Divider,
   Drawer,
   IconButton,
@@ -37,18 +33,14 @@ import { Logo } from './Logo';
 interface NavItem {
   label: string;
   icon: ReactNode;
-  /** Items without a page are part of the design but outside this assignment's scope. */
-  to?: string;
+  to: string;
 }
 
 const NAV_ITEMS: NavItem[] = [
   { label: 'Dashboard', icon: <DashboardOutlinedIcon />, to: '/dashboard' },
   { label: 'Transactions', icon: <ReceiptLongOutlinedIcon />, to: '/transactions' },
-  { label: 'Wallet', icon: <AccountBalanceWalletOutlinedIcon /> },
   { label: 'Analytics', icon: <InsightsOutlinedIcon />, to: '/analytics' },
   { label: 'Personal', icon: <PersonOutlineIcon />, to: '/profile' },
-  { label: 'Message', icon: <MailOutlineIcon /> },
-  { label: 'Setting', icon: <SettingsOutlinedIcon /> },
 ];
 
 const PAGE_TITLES: Record<string, string> = {
@@ -140,35 +132,26 @@ function SidebarContent({
         <Logo />
       </Box>
       <List component="nav" aria-label="Main" sx={{ mt: 4 }}>
-        {NAV_ITEMS.map((item) =>
-          item.to ? (
-            <ListItemButton
-              key={item.label}
-              component={NavLink}
-              to={item.to}
-              onClick={onNavigate}
-              sx={{
-                ...navItemSx,
-                // NavLink adds the "active" class to the current page's link.
-                '&.active': {
-                  color: tokens.color.brand,
-                  borderRight: `3px solid ${tokens.color.warning}`,
-                },
-                '&.active .MuiListItemIcon-root': { color: tokens.color.brand },
-              }}
-            >
-              <ListItemIcon sx={navIconSx}>{item.icon}</ListItemIcon>
-              <ListItemText primary={item.label} primaryTypographyProps={{ variant: 'body2' }} />
-            </ListItemButton>
-          ) : (
-            // Shown disabled with a "Soon" tag, rather than as a link that goes nowhere.
-            <ListItemButton key={item.label} disabled sx={navItemSx}>
-              <ListItemIcon sx={navIconSx}>{item.icon}</ListItemIcon>
-              <ListItemText primary={item.label} primaryTypographyProps={{ variant: 'body2' }} />
-              <Chip label="Soon" size="small" sx={{ height: 18, fontSize: '0.625rem' }} />
-            </ListItemButton>
-          ),
-        )}
+        {NAV_ITEMS.map((item) => (
+          <ListItemButton
+            key={item.label}
+            component={NavLink}
+            to={item.to}
+            onClick={onNavigate}
+            sx={{
+              ...navItemSx,
+              // NavLink adds the "active" class to the current page's link.
+              '&.active': {
+                color: tokens.color.brand,
+                borderRight: `3px solid ${tokens.color.warning}`,
+              },
+              '&.active .MuiListItemIcon-root': { color: tokens.color.brand },
+            }}
+          >
+            <ListItemIcon sx={navIconSx}>{item.icon}</ListItemIcon>
+            <ListItemText primary={item.label} primaryTypographyProps={{ variant: 'body2' }} />
+          </ListItemButton>
+        ))}
       </List>
       <Divider sx={{ my: 1.5 }} />
       <ListItemButton onClick={onLogout} sx={navItemSx}>
