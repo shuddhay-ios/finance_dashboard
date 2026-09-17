@@ -1,10 +1,17 @@
 import { HttpException, HttpStatus } from '@nestjs/common';
 import type { ErrorCode, ErrorEnvelope } from '@finance/shared';
+import { ZodValidationException } from 'nestjs-zod';
+import { ZodError } from 'zod';
 import { AppError } from './app-error';
 
 export interface ErrorResponse {
   status: number;
   envelope: ErrorEnvelope;
+}
+
+export interface FieldProblem {
+  field: string;
+  message: string;
 }
 
 // Nest and its libraries throw plain HttpExceptions (e.g. 404 for an unknown route).
@@ -25,6 +32,19 @@ export function toErrorResponse(exception: unknown, requestId: string | null): E
         code: exception.code,
         message: exception.message,
         details: exception.details,
+        requestId,
+      },
+    };
+  }
+
+  // The web app shows "field: reason", so validation errors carry one entry per bad field.
+  if (exception instanceof ZodValidationException) {
+    return {
+      status: HttpStatus.BAD_REQUEST,
+      envelope: {
+        code: 'VALIDATION_FAILED',
+        message: 'Request validation failed',
+        details: toFieldProblems(exception.getZodError()),
         requestId,
       },
     };
@@ -55,4 +75,14 @@ export function toErrorResponse(exception: unknown, requestId: string | null): E
       requestId,
     },
   };
+}
+
+function toFieldProblems(error: unknown): FieldProblem[] {
+  if (!(error instanceof ZodError)) {
+    return [];
+  }
+  return error.issues.map((issue) => ({
+    field: issue.path.join('.'),
+    message: issue.message,
+  }));
 }
