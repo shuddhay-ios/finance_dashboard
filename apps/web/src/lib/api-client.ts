@@ -33,7 +33,7 @@ export function onSessionExpired(handler: () => void): void {
 }
 
 export interface RequestOptions {
-  method?: 'GET' | 'POST' | 'DELETE';
+  method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
   body?: unknown;
   query?: URLSearchParams;
 }
@@ -93,7 +93,8 @@ async function send(
   if (accessToken) {
     headers.Authorization = `Bearer ${accessToken}`;
   }
-  if (body !== undefined) {
+  // For FormData (file uploads) the browser sets Content-Type itself, including the boundary.
+  if (body !== undefined && !(body instanceof FormData)) {
     headers['Content-Type'] = 'application/json';
   }
 
@@ -104,11 +105,18 @@ async function send(
     return await fetch(url, {
       method,
       headers,
-      body: body === undefined ? undefined : JSON.stringify(body),
+      body: encodeBody(body),
     });
   } catch {
     throw new ApiError('NETWORK_ERROR', 'Could not reach the server', null, null, null);
   }
+}
+
+function encodeBody(body: unknown): BodyInit | undefined {
+  if (body === undefined) {
+    return undefined;
+  }
+  return body instanceof FormData ? body : JSON.stringify(body);
 }
 
 async function isExpiredTokenResponse(response: Response): Promise<boolean> {

@@ -14,7 +14,7 @@ describe('chipMessage', () => {
   it('names the first invalid field for validation errors', () => {
     const details = [{ field: 'dateFrom', message: 'dateFrom must be on or before dateTo' }];
     expect(chipMessage(error('VALIDATION_FAILED', details))).toBe(
-      'Check your filters — dateFrom: dateFrom must be on or before dateTo',
+      'Check your input — dateFrom: dateFrom must be on or before dateTo',
     );
   });
 

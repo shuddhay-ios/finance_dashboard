@@ -30,7 +30,7 @@ export function chipMessage(error: ApiError): string {
       return 'Session ended for security. Please log in again';
     case 'VALIDATION_FAILED': {
       const [first] = isFieldProblemList(error.details) ? error.details : [];
-      return first ? `Check your filters — ${first.field}: ${first.message}` : 'Check your filters';
+      return first ? `Check your input — ${first.field}: ${first.message}` : 'Check your input';
     }
     case 'RATE_LIMITED':
       return 'Too many attempts. Try again in a minute';
