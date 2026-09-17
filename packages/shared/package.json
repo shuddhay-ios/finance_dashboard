@@ -1,0 +1,22 @@
+{
+  "name": "@finance/shared",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Types, zod schemas and pure helpers shared by the API and the web app",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "vitest": "^3.2.7"
+  }
+}
