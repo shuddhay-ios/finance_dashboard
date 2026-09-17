@@ -5,7 +5,7 @@ import type { Model, Types } from 'mongoose';
 import { AppError } from '../common/errors/app-error';
 import { ENV } from '../config/config.module';
 import type { Env } from '../config/env';
-import { generateRefreshToken, hashRefreshToken } from './refresh-token';
+import { generateOpaqueToken, hashOpaqueToken } from '../common/opaque-token';
 import { type RevokeReason, SESSION_MODEL, type Session } from './session.schema';
 
 const MS_PER_DAY = 24 * 60 * 60 * 1000;
@@ -60,7 +60,7 @@ export class SessionsService {
 
   async rotate(refreshToken: string, client: ClientInfo): Promise<RotatedSession> {
     const session = await this.sessionModel
-      .findOne({ tokenHash: hashRefreshToken(refreshToken) })
+      .findOne({ tokenHash: hashOpaqueToken(refreshToken) })
       .lean()
       .exec();
     if (!session) {
@@ -99,7 +99,7 @@ export class SessionsService {
   /** Called on logout: ends every token from this login, not just the one presented. */
   async end(refreshToken: string): Promise<void> {
     const session = await this.sessionModel
-      .findOne({ tokenHash: hashRefreshToken(refreshToken) })
+      .findOne({ tokenHash: hashOpaqueToken(refreshToken) })
       .lean()
       .exec();
     if (session) {
@@ -118,13 +118,13 @@ export class SessionsService {
     familyId: string,
     client: ClientInfo,
   ): Promise<IssuedRefreshToken> {
-    const refreshToken = generateRefreshToken();
+    const refreshToken = generateOpaqueToken();
     const expiresAt = new Date(Date.now() + this.env.REFRESH_TOKEN_TTL_DAYS * MS_PER_DAY);
 
     await this.sessionModel.create({
       user: userId,
       familyId,
-      tokenHash: hashRefreshToken(refreshToken),
+      tokenHash: hashOpaqueToken(refreshToken),
       expiresAt,
       userAgent: client.userAgent,
       ip: client.ip,
