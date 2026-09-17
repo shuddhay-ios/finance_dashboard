@@ -39,6 +39,10 @@ services:
       PORT: 3000
       LOG_LEVEL: ${LOG_LEVEL:-info}
       MONGODB_URI: mongodb://mongo:27017/finance
+      JWT_ACCESS_SECRET: ${JWT_ACCESS_SECRET:?Set JWT_ACCESS_SECRET in .env (copy .env.example)}
+      ACCESS_TOKEN_TTL_SECONDS: ${ACCESS_TOKEN_TTL_SECONDS:-900}
+      REFRESH_TOKEN_TTL_DAYS: ${REFRESH_TOKEN_TTL_DAYS:-7}
+      LOGIN_ATTEMPTS_PER_MINUTE: ${LOGIN_ATTEMPTS_PER_MINUTE:-5}
     depends_on:
       seed:
         condition: service_completed_successfully
