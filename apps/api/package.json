@@ -20,6 +20,7 @@
     "@swc/core": "^1.16.2",
     "@types/cookie-parser": "^1.4.10",
     "@types/express": "^5.0.6",
+    "@types/multer": "^2.2.0",
     "@types/node": "^22.20.3",
     "@types/supertest": "^6.0.3",
     "mongodb-memory-server": "^10.4.3",

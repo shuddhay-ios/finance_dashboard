@@ -20,6 +20,8 @@ const CODE_BY_STATUS: Partial<Record<number, ErrorCode>> = {
   [HttpStatus.BAD_REQUEST]: 'VALIDATION_FAILED',
   [HttpStatus.UNAUTHORIZED]: 'AUTH_TOKEN_INVALID',
   [HttpStatus.NOT_FOUND]: 'NOT_FOUND',
+  // An upload over the size limit.
+  [HttpStatus.PAYLOAD_TOO_LARGE]: 'VALIDATION_FAILED',
   [HttpStatus.TOO_MANY_REQUESTS]: 'RATE_LIMITED',
 };
 

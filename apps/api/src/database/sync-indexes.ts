@@ -3,6 +3,7 @@ import { SESSION_MODEL, sessionSchema } from '../auth/session.schema';
 import { EXPORT_JOB_MODEL, exportJobSchema } from '../exports/export-job.schema';
 import { EXPORT_TEMPLATE_MODEL, exportTemplateSchema } from '../exports/export-template.schema';
 import { TRANSACTION_MODEL, transactionSchema } from '../transactions/transaction.schema';
+import { AVATAR_MODEL, avatarSchema } from '../users/avatar.schema';
 import { USER_MODEL, userSchema } from '../users/user.schema';
 
 // Every collection the app uses. A new schema must be added here, or its indexes (unique
@@ -13,6 +14,7 @@ const MODELS: [name: string, schema: Schema][] = [
   [SESSION_MODEL, sessionSchema],
   [EXPORT_JOB_MODEL, exportJobSchema],
   [EXPORT_TEMPLATE_MODEL, exportTemplateSchema],
+  [AVATAR_MODEL, avatarSchema],
 ];
 
 /**
