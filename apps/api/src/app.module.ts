@@ -8,6 +8,7 @@ import { ConfigModule } from './config/config.module';
 import type { Env } from './config/env';
 import { DatabaseModule } from './database/database.module';
 import { HealthModule } from './health/health.module';
+import { TransactionsModule } from './transactions/transactions.module';
 
 @Module({})
 export class AppModule {
@@ -20,6 +21,7 @@ export class AppModule {
         DatabaseModule,
         HealthModule,
         AuthModule,
+        TransactionsModule,
       ],
       providers: [
         { provide: APP_FILTER, useClass: AllExceptionsFilter },
