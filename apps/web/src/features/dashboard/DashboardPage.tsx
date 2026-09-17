@@ -1,4 +1,7 @@
-import { Grid, Paper, Stack, Typography } from '@mui/material';
+import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
+import { Button, Grid, Paper, Stack, Typography } from '@mui/material';
+import { useState } from 'react';
+import { ExportDialog } from '../exports/ExportDialog';
 import { FilterBar } from '../transactions/FilterBar';
 import { useTransactions } from '../transactions/queries';
 import { TransactionTable } from '../transactions/TransactionTable';
@@ -15,6 +18,8 @@ export function DashboardPage() {
   const trends = useTrends(view);
   const breakdown = useBreakdown(view);
   const transactions = useTransactions(view);
+
+  const [isExportOpen, setIsExportOpen] = useState(false);
 
   const clearFilters = () => updateView(CLEARED_FILTERS);
 
@@ -46,6 +51,13 @@ export function DashboardPage() {
       <Paper sx={{ p: { xs: 2, md: 2.5 } }}>
         <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 2 }}>
           <Typography variant="h2">Transactions</Typography>
+          <Button
+            variant="contained"
+            startIcon={<FileDownloadOutlinedIcon />}
+            onClick={() => setIsExportOpen(true)}
+          >
+            Export
+          </Button>
         </Stack>
         <TransactionTable
           data={transactions.data}
@@ -56,6 +68,8 @@ export function DashboardPage() {
           onClearFilters={clearFilters}
         />
       </Paper>
+      {/* Mounted only while open, so each export starts from fresh settings and queries. */}
+      {isExportOpen && <ExportDialog open onClose={() => setIsExportOpen(false)} view={view} />}
     </Stack>
   );
 }
