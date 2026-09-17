@@ -94,7 +94,7 @@ describe('exportRequestSchema', () => {
       dateFormat: 'YYYY-MM-DD',
       delimiter: ',',
       includeHeaders: true,
-      filenameTemplate: 'transactions_{dateFrom}_to_{dateTo}',
+      filenameTemplate: 'transactions_{dates}',
       filters: {},
     });
   });
@@ -110,6 +110,18 @@ describe('resolveExportFilename', () => {
       today,
     );
     expect(name).toBe('transactions_2024-01-01_to_2024-03-31_Paid.csv');
+  });
+
+  it('describes the period with {dates}, whatever dates are set', () => {
+    const name = (filters: { dateFrom?: string; dateTo?: string }) =>
+      resolveExportFilename('transactions_{dates}', filters, today);
+
+    expect(name({ dateFrom: '2024-01-01', dateTo: '2024-03-31' })).toBe(
+      'transactions_2024-01-01_to_2024-03-31.csv',
+    );
+    expect(name({ dateFrom: '2024-01-01' })).toBe('transactions_from_2024-01-01.csv');
+    expect(name({ dateTo: '2024-03-31' })).toBe('transactions_until_2024-03-31.csv');
+    expect(name({})).toBe('transactions_all_as_of_2026-09-17.csv');
   });
 
   it('uses "all" for unset filters and supports {today}', () => {

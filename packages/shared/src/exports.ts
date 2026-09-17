@@ -44,7 +44,7 @@ export type DateFormat = (typeof DATE_FORMATS)[number];
 export const DELIMITERS = [',', ';', '\t'] as const;
 export type Delimiter = (typeof DELIMITERS)[number];
 
-export const DEFAULT_FILENAME_TEMPLATE = 'transactions_{dateFrom}_to_{dateTo}';
+export const DEFAULT_FILENAME_TEMPLATE = 'transactions_{dates}';
 
 export interface ExportPreset {
   id: string;
@@ -223,7 +223,7 @@ export function exportHeader(columns: ExportColumnKey[]): string[] {
 const MAX_FILENAME_LENGTH = 100;
 
 /**
- * Fills {dateFrom} {dateTo} {category} {status} {user} {today} and makes the result safe:
+ * Fills {dates} {dateFrom} {dateTo} {category} {status} {user} {today} and makes the result safe:
  * only letters, digits, dot, dash and underscore survive, so no path separators, quotes or
  * control characters can reach the file system or the Content-Disposition header.
  */
@@ -233,6 +233,7 @@ export function resolveExportFilename(
   today: Date,
 ): string {
   const values: Record<string, string> = {
+    dates: describeDates(filters, today),
     dateFrom: filters.dateFrom?.slice(0, 10) ?? 'all',
     dateTo: filters.dateTo?.slice(0, 10) ?? 'all',
     category: filters.category?.join('-') ?? 'all',
@@ -251,8 +252,28 @@ export function resolveExportFilename(
   return `${safe || 'transactions'}.csv`;
 }
 
+/**
+ * "2024-01-01_to_2024-03-31", "from_2024-01-01", "until_2024-03-31", or "all_as_of_<today>"
+ * when there is no date filter, so a file name always says which period it covers.
+ */
+function describeDates(filters: TransactionFilterQuery, today: Date): string {
+  const from = filters.dateFrom?.slice(0, 10);
+  const to = filters.dateTo?.slice(0, 10);
+  if (from && to) {
+    return `${from}_to_${to}`;
+  }
+  if (from) {
+    return `from_${from}`;
+  }
+  if (to) {
+    return `until_${to}`;
+  }
+  return `all_as_of_${today.toISOString().slice(0, 10)}`;
+}
+
 /** The placeholders resolveExportFilename understands, for the modal's insert buttons. */
 export const FILENAME_VARIABLES = [
+  'dates',
   'dateFrom',
   'dateTo',
   'status',
