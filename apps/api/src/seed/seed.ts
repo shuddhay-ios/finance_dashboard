@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import { z } from 'zod';
+import { SESSION_MODEL, sessionSchema } from '../auth/session.schema';
 import { envSchema, parseWithSchema } from '../config/env';
 import { loadEnvFileIfPresent } from '../config/load-env-file';
 import { TRANSACTION_MODEL, transactionSchema } from '../transactions/transaction.schema';
@@ -27,6 +28,9 @@ async function main(): Promise<void> {
       rawTransactions,
       env.DEMO_PASSWORD,
     );
+    // Sessions hold no seed data, but their indexes (including the TTL clean-up) are
+    // created here too, because the app itself starts with autoIndex off.
+    await connection.model(SESSION_MODEL, sessionSchema).syncIndexes();
     console.log(`Seeded ${result.users} users and ${result.transactions} transactions`);
   } finally {
     await connection.close();
