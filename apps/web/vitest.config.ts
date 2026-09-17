@@ -8,5 +8,8 @@ export default defineConfig({
   test: {
     environment: 'jsdom',
     setupFiles: ['./src/test/setup.ts'],
+    // Component tests render full MUI dialogs; with every file running in parallel on a
+    // slower machine, the default 5 s is too tight.
+    testTimeout: 15_000,
   },
 });
