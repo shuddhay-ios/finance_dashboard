@@ -31,9 +31,9 @@ export async function runSeed(
     userSeeds.map((user) => ({
       updateOne: {
         filter: { externalId: user.externalId },
-        // $setOnInsert only applies when the user is new, so re-seeding never quietly
-        // changes an existing user's password. Profile fields are refreshed with $set.
-        update: { $set: user, $setOnInsert: { passwordHash } },
+        // $setOnInsert only applies when the user is new, so re-seeding never overwrites what
+        // a user has changed since: their password, name or profile photo.
+        update: { $setOnInsert: { ...user, passwordHash } },
         upsert: true,
       },
     })),

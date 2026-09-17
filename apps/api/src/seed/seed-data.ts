@@ -6,6 +6,7 @@ import {
   toMinorUnits,
 } from '@finance/shared';
 import type { Types } from 'mongoose';
+import { defaultAvatarUrl } from '../users/default-avatar';
 import { z } from 'zod';
 
 // Validates the provided file before anything touches the database: bad data should stop
@@ -51,11 +52,6 @@ export interface TransactionSeed {
   user: Types.ObjectId;
 }
 
-// Same seed in, same face out, on every render, with no image stored by us.
-function avatarUrlFor(externalId: string): string {
-  return `https://api.dicebear.com/9.x/notionists/svg?seed=${encodeURIComponent(externalId)}`;
-}
-
 export function buildUserSeeds(transactions: RawTransaction[]): UserSeed[] {
   const externalIds = [...new Set(transactions.map((transaction) => transaction.user_id))].sort();
 
@@ -68,7 +64,7 @@ export function buildUserSeeds(transactions: RawTransaction[]): UserSeed[] {
       externalId,
       name: profile.name,
       email: profile.email,
-      avatarUrl: avatarUrlFor(externalId),
+      avatarUrl: defaultAvatarUrl(externalId),
       role: 'analyst',
     };
   });
