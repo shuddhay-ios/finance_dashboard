@@ -1,6 +1,7 @@
 import { type DynamicModule, Module } from '@nestjs/common';
 import { APP_FILTER, APP_PIPE } from '@nestjs/core';
 import { ZodValidationPipe } from 'nestjs-zod';
+import { AnalyticsModule } from './analytics/analytics.module';
 import { AuthModule } from './auth/auth.module';
 import { AllExceptionsFilter } from './common/errors/all-exceptions.filter';
 import { LoggingModule } from './common/logging/logging.module';
@@ -22,6 +23,7 @@ export class AppModule {
         HealthModule,
         AuthModule,
         TransactionsModule,
+        AnalyticsModule,
       ],
       providers: [
         { provide: APP_FILTER, useClass: AllExceptionsFilter },
