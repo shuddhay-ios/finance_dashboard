@@ -6,9 +6,8 @@ the columns and their order.
 
 **Stack:** NestJS 11 · MongoDB 7 (Mongoose 8) · zod · React + TypeScript · pnpm monorepo
 
-> 🚧 Work in progress. Done so far: project foundation, data model, seed, authentication,
-> transactions (filter/search/sort/paginate) and analytics APIs, logging, error handling, health
-> checks, API docs. Next: CSV export, then the web app.
+> 🚧 Work in progress. The API is complete: authentication, transactions, analytics, and streamed
+> CSV export with saved templates. Next: the web app, then deployment.
 
 ## Demo login
 
@@ -57,18 +56,22 @@ pnpm test        # unit + integration; integration tests use an in-memory MongoD
 All routes are under `/api/v1` and require `Authorization: Bearer <accessToken>` unless marked public.
 Every error has the same shape: `{ code, message, details, requestId }`.
 
-| Method | Path                   | Auth                 | What it does                                                                |
-| ------ | ---------------------- | -------------------- | --------------------------------------------------------------------------- |
-| POST   | `/auth/login`          | public, 5/min per IP | `{ email, password }` → `{ accessToken, user }` and sets the refresh cookie |
-| POST   | `/auth/refresh`        | refresh cookie       | New access token; the refresh cookie is rotated                             |
-| POST   | `/auth/logout`         | refresh cookie       | Ends the session, clears the cookie (`204`)                                 |
-| GET    | `/auth/me`             | bearer               | The logged-in user                                                          |
-| GET    | `/transactions`        | bearer               | Filter, search, sort and paginate transactions                              |
-| GET    | `/analytics/summary`   | bearer               | Totals, pending, and % change vs the previous equal-length period           |
-| GET    | `/analytics/trends`    | bearer               | Revenue and expense per `day`/`week`/`month`; empty periods are zero        |
-| GET    | `/analytics/breakdown` | bearer               | Totals by `category`/`status`/`user`/`month`; percentages sum to 100        |
-| GET    | `/health`              | public               | Liveness                                                                    |
-| GET    | `/health/ready`        | public               | Readiness (pings MongoDB)                                                   |
+| Method | Path                       | Auth                 | What it does                                                                     |
+| ------ | -------------------------- | -------------------- | -------------------------------------------------------------------------------- |
+| POST   | `/auth/login`              | public, 5/min per IP | `{ email, password }` → `{ accessToken, user }` and sets the refresh cookie      |
+| POST   | `/auth/refresh`            | refresh cookie       | New access token; the refresh cookie is rotated                                  |
+| POST   | `/auth/logout`             | refresh cookie       | Ends the session, clears the cookie (`204`)                                      |
+| GET    | `/auth/me`                 | bearer               | The logged-in user                                                               |
+| GET    | `/transactions`            | bearer               | Filter, search, sort and paginate transactions                                   |
+| GET    | `/analytics/summary`       | bearer               | Totals, pending, and % change vs the previous equal-length period                |
+| GET    | `/analytics/trends`        | bearer               | Revenue and expense per `day`/`week`/`month`; empty periods are zero             |
+| GET    | `/analytics/breakdown`     | bearer               | Totals by `category`/`status`/`user`/`month`; percentages sum to 100             |
+| POST   | `/exports`                 | bearer               | Save columns, format and filters; returns a single-use download token valid 60 s |
+| GET    | `/exports/:token/download` | token in URL         | Streams the CSV as a file download                                               |
+| GET    | `/export-templates`        | bearer               | Your saved column layouts                                                        |
+| POST   | `/export-templates`        | bearer               | Save a column layout                                                             |
+| GET    | `/health`                  | public               | Liveness                                                                         |
+| GET    | `/health/ready`            | public               | Readiness (pings MongoDB)                                                        |
 
 The transactions and analytics endpoints all accept the same filters: `search`, `dateFrom`, `dateTo`, `amountMin`, `amountMax`, `category`, `status`, `userId` (repeat a key for several values, e.g. `?status=Paid&status=Pending`). The list also takes `page`, `limit` (max 100), `sortBy` (`date`/`amount`/`category`/`status`/`user`) and `sortDir`.
 

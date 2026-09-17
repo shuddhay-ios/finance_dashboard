@@ -26,7 +26,7 @@ alternative, and why.
 
 ## Indexes are built by the seed, not on app startup (`autoIndex: false`)
 
-- **Why:** index builds are a deploy step. Letting every API instance try to build them on boot is slow and racy in production. `runSeed` calls `syncIndexes()`, and a test asserts the indexes exist.
+- **Why:** index builds are a deploy step. Letting every API instance try to build them on boot is slow and racy in production. The seed step calls `syncAllIndexes()` (see "Every collection's indexes are created in one place"), and a test asserts the indexes exist.
 
 ## Status is a closed enum
 
@@ -151,3 +151,38 @@ alternative, and why.
 - Sorting by user name joins every matching row; storing the user's name on each transaction would make it indexable.
 - `countDocuments` runs on every page request; for millions of rows an estimated count or a cached total would be cheaper.
 - Case-insensitive "contains" regex can't use an index; a text or Atlas Search index would be needed.
+
+## CSV export
+
+### Two steps: prepare, then a native browser download
+
+- **Picked:** `POST /exports` (logged in) saves the column layout and filters and returns a download token. The browser then navigates to `GET /exports/:token/download`; the API streams the CSV with `Content-Disposition: attachment`, so the browser saves a real file with the right name.
+- **Alternative:** `fetch` the CSV with the bearer token, turn it into a Blob and fake a link click.
+- **Why:** a plain navigation can't send an `Authorization` header. The Blob approach holds the whole file in browser memory and depends on JavaScript to name the file. With the token flow the download is native and the server can stream.
+
+### The download token is a random, single-use, 60-second value stored as a hash
+
+- **Alternative:** a signed JWT, as first planned.
+- **Why:** "single use" needs server-side state anyway (something must remember that the token was used), and a signature adds nothing on top. It's the same reasoning as refresh tokens, and it reuses the same helpers (`common/opaque-token.ts`).
+- Redeeming is one atomic `findOneAndUpdate` on `usedAt: null` and `expiresAt > now`, so two racing requests can't both download. A TTL index deletes old jobs.
+- The token is the credential, like a pre-signed S3 URL: whoever holds it within 60 seconds can download once. It isn't tied to the browser session, because the refresh cookie is only sent to `/auth` routes and a navigation carries no bearer token.
+- Download URLs are masked in logs (`/exports/[redacted]/download`).
+
+### Streaming
+
+- Rows come from a MongoDB aggregation cursor, are formatted one at a time, go through `csv-stringify`, and are written straight to the response. Memory use stays flat regardless of row count.
+- If something fails after the file has started, the connection is destroyed, so the browser shows a failed download rather than saving a truncated file.
+
+### CSV correctness
+
+- RFC 4180 quoting, CRLF line endings, and a UTF-8 byte-order mark so Excel reads non-ASCII names correctly.
+- `csv-stringify` quotes values containing `\r\n` but not a lone `\n` when CRLF line endings are used, which would split a row. `quoted_match: /[\r\n]/` forces quotes; a unit test covers it.
+- Amounts are formatted with integer arithmetic (`1200.50`, never `1200.5` or `1,200.50`).
+- **CSV injection:** text from the data that starts with `= + - @ \t \r` gets a leading `'`, so spreadsheets don't run it as a formula. Numbers the API formats itself (like a signed amount `-1200.50`) are left alone, so they stay numbers.
+- All cell formatting lives in `packages/shared`, so the export modal's live preview shows exactly what the file will contain.
+- Filenames are built from a template (`{dateFrom}`, `{dateTo}`, `{status}`, `{category}`, `{user}`, `{today}`) and reduced to letters, digits, `.`, `-` and `_`, so nothing can break out of the header or the file system.
+
+### Every collection's indexes are created in one place
+
+- `database/sync-indexes.ts` lists every schema and syncs its indexes. The seed step runs it, and so do the tests.
+- This was added after a test showed the "no duplicate template names" rule wasn't enforced: the unique index for the new collection was never created, because the app starts with `autoIndex` off.
