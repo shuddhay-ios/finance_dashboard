@@ -226,3 +226,12 @@ export function activeFilters(view: DashboardView, userNames: Map<string, string
 
   return chips;
 }
+
+/**
+ * Typing "priya" commits "p", then "priya" as the typing pauses. Those refinements should
+ * replace the current history entry, or Back would step through every half-typed word.
+ * Starting or clearing a text filter does add an entry, so Back can undo it.
+ */
+export function isRefiningText(previous: string | null, next: string | null): boolean {
+  return Boolean(previous) && Boolean(next);
+}

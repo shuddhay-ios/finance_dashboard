@@ -30,7 +30,8 @@ import {
   presetRange,
 } from './date-presets';
 import { useUsers } from './queries';
-import { CLEARED_FILTERS, type DashboardView, activeFilters } from './url-filters';
+import type { UpdateView } from './use-dashboard-view';
+import { CLEARED_FILTERS, type DashboardView, activeFilters, isRefiningText } from './url-filters';
 
 const SEARCH_DEBOUNCE_MS = 300;
 const AMOUNT_DEBOUNCE_MS = 500;
@@ -38,7 +39,7 @@ const AMOUNT = /^\d*(\.\d{0,2})?$/;
 
 interface FilterBarProps {
   view: DashboardView;
-  updateView: (changes: Partial<DashboardView>) => void;
+  updateView: UpdateView;
 }
 
 export function FilterBar({ view, updateView }: FilterBarProps) {
@@ -52,17 +53,26 @@ export function FilterBar({ view, updateView }: FilterBarProps) {
   return (
     <Stack spacing={1.5}>
       <Stack direction="row" flexWrap="wrap" useFlexGap spacing={1.5}>
-        <SearchField value={view.search} onCommit={(search) => updateView({ search })} />
+        <SearchField
+          value={view.search}
+          onCommit={(search) =>
+            updateView({ search }, { replace: isRefiningText(view.search, search) })
+          }
+        />
         <DateRangeFilter view={view} updateView={updateView} />
         <AmountField
           label="Min amount"
           value={view.amountMin}
-          onCommit={(amountMin) => updateView({ amountMin })}
+          onCommit={(amountMin) =>
+            updateView({ amountMin }, { replace: isRefiningText(view.amountMin, amountMin) })
+          }
         />
         <AmountField
           label="Max amount"
           value={view.amountMax}
-          onCommit={(amountMax) => updateView({ amountMax })}
+          onCommit={(amountMax) =>
+            updateView({ amountMax }, { replace: isRefiningText(view.amountMax, amountMax) })
+          }
         />
         <MultiSelectFilter<TransactionCategory>
           label="Category"
@@ -116,9 +126,9 @@ function SearchField({ value, onCommit }: { value: string; onCommit: (next: stri
       value={text}
       onChange={(event) => setText(event.target.value)}
       // Says exactly what is searchable: the data has no description field to search.
-      placeholder="Search ID, user, category, status or exact amount"
+      placeholder="Search ID, user, status or amount"
       inputProps={{ 'aria-label': 'Search transactions' }}
-      sx={{ flex: '2 1 280px' }}
+      sx={{ flex: '2 1 300px' }}
       InputProps={{
         startAdornment: (
           <InputAdornment position="start">

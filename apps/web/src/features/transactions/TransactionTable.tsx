@@ -29,6 +29,7 @@ import {
 import { EmptyState } from '../../components/EmptyState';
 import { formatDate, formatSignedMoney } from '../../lib/format';
 import { tokens } from '../../theme/tokens';
+import type { UpdateView } from './use-dashboard-view';
 import { type DashboardView, PAGE_SIZES, type PageSize } from './url-filters';
 
 interface Column {
@@ -50,7 +51,7 @@ interface TransactionTableProps {
   isLoading: boolean;
   isShowingPreviousData: boolean;
   view: DashboardView;
-  updateView: (changes: Partial<DashboardView>) => void;
+  updateView: UpdateView;
   onClearFilters: () => void;
 }
 
@@ -220,7 +221,7 @@ interface MobileListProps {
   rows: TransactionResponse[] | undefined;
   isLoading: boolean;
   view: DashboardView;
-  updateView: (changes: Partial<DashboardView>) => void;
+  updateView: UpdateView;
 }
 
 /** Under 768px a five-column table doesn't fit, so each transaction becomes a card. */

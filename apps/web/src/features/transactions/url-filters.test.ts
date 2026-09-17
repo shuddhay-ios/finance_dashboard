@@ -3,6 +3,7 @@ import {
   DEFAULT_VIEW,
   type DashboardView,
   activeFilters,
+  isRefiningText,
   listParams,
   readView,
   writeView,
@@ -80,5 +81,18 @@ describe('activeFilters', () => {
 
     expect(chips.map((chip) => chip.label)).toEqual(['Paid', 'Pending', 'Priya Sharma']);
     expect(chips[0]?.removal).toEqual({ statuses: ['Pending'] });
+  });
+});
+
+describe('isRefiningText', () => {
+  it('replaces history while an existing text filter is being edited', () => {
+    expect(isRefiningText('p', 'priya')).toBe(true);
+    expect(isRefiningText('100', '1000')).toBe(true);
+  });
+
+  it('adds a history entry when a text filter is started or cleared', () => {
+    expect(isRefiningText('', 'p')).toBe(false);
+    expect(isRefiningText(null, '100')).toBe(false);
+    expect(isRefiningText('priya', '')).toBe(false);
   });
 });
