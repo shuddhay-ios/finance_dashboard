@@ -1,0 +1,23 @@
+# Render Blueprint for the API: https://render.com/docs/blueprint-spec
+services:
+  - type: web
+    name: findash-api
+    runtime: docker
+    dockerfilePath: ./apps/api/Dockerfile
+    dockerContext: .
+    plan: free
+    healthCheckPath: /api/v1/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: LOG_LEVEL
+        value: info
+      # Set in the Render dashboard: the MongoDB Atlas connection string.
+      - key: MONGODB_URI
+        sync: false
+      # Render generates a long random value once and keeps it.
+      - key: JWT_ACCESS_SECRET
+        generateValue: true
+      # Requests arrive through Vercel's rewrite and then Render's own proxy.
+      - key: TRUST_PROXY_HOPS
+        value: '2'
