@@ -3,10 +3,10 @@ packages:
   - packages/*
 
 # pnpm 10 skips dependency install scripts unless a package is listed here.
-# These four need theirs: native binaries (argon2, swc, esbuild) and the MongoDB
-# binary that mongodb-memory-server downloads for tests.
+# swc and esbuild need theirs to fetch native binaries; mongodb-memory-server
+# downloads the MongoDB binary used by tests. argon2 is deliberately absent: it
+# ships prebuilt binaries, and its install script would try (and fail) to compile C++.
 onlyBuiltDependencies:
   - '@swc/core'
-  - argon2
   - esbuild
   - mongodb-memory-server
