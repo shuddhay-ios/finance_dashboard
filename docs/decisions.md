@@ -186,3 +186,29 @@ alternative, and why.
 
 - `database/sync-indexes.ts` lists every schema and syncs its indexes. The seed step runs it, and so do the tests.
 - This was added after a test showed the "no duplicate template names" rule wasn't enforced: the unique index for the new collection was never created, because the app starts with `autoIndex` off.
+
+## Web app
+
+### Filters, sort and paging live in the URL
+
+- **Why:** a filtered view can be shared as a link, survives a refresh, and Back undoes a change. `readView` ignores invalid values from a hand-edited link instead of crashing; `writeView` leaves defaults out so links stay short.
+- Typing in search or amount boxes is debounced, and refining an existing text filter **replaces** the history entry. Only starting or clearing a text filter adds one. Without this, Back stepped through every half-typed word (found while testing in the browser).
+
+### Access token in memory, refreshed silently
+
+- The API client keeps the access token in a module variable, never `localStorage`. On page load it swaps the httpOnly refresh cookie for a new token.
+- When a request gets `AUTH_TOKEN_EXPIRED`, the client refreshes and retries once. Concurrent expiries share **one** refresh call, because sending the same refresh token twice would trip the server's reuse detection and end the session.
+
+### Server state in TanStack Query, UI state in Zustand
+
+- Query keys contain every parameter, so responses for an old filter can't overwrite the current one, and `keepPreviousData` keeps the last page visible while the next loads (no blank flash).
+- Every failed query raises an alert chip from one place (`QueryCache.onError`). Chip text comes from the error `code`, never the raw server message. Identical chips are shown once, at most three at a time, auto-dismissed after 6 s; network errors get a Retry button.
+
+### No axios, no date-picker library
+
+- `fetch` plus ~100 lines covers bearer tokens, the refresh-and-retry flow and error parsing, and it's easy to explain. Native `type="date"` inputs cover the custom date range.
+
+### Design
+
+- Colours, radii and sizes come from the Figma into one `theme/tokens.ts`, which the MUI theme is built from. No hex values are scattered through components.
+- The Figma's side "Recent transactions" panel became the breakdown panel with a dimension switcher, because the dataset's two categories make a fixed category chart meaningless.

@@ -6,8 +6,8 @@ the columns and their order.
 
 **Stack:** NestJS 11 · MongoDB 7 (Mongoose 8) · zod · React + TypeScript · pnpm monorepo
 
-> 🚧 Work in progress. The API is complete: authentication, transactions, analytics, and streamed
-> CSV export with saved templates. Next: the web app, then deployment.
+> 🚧 Work in progress. API and web app are working locally: login, dashboard (metric cards, trend and
+> breakdown charts), transaction table with URL-synced filters. Next: the export modal, then deployment.
 
 ## Demo login
 
@@ -40,7 +40,8 @@ pnpm install
 cp .env.example .env
 pnpm --filter @finance/shared build
 pnpm --filter @finance/api seed
-pnpm --filter @finance/api dev
+pnpm --filter @finance/api dev      # API on http://localhost:3000
+pnpm --filter @finance/web dev      # web app on http://localhost:5173 (proxies /api to :3000)
 ```
 
 ### Checks
@@ -108,6 +109,7 @@ Findings from the provided `transactions.json` (300 records) and the decision ea
 
 ```
 apps/api          NestJS API
+apps/web          React + Vite + MUI web app
 packages/shared   zod schemas, enums and money helpers used by both API and web
 docs/decisions.md why things are built the way they are
 ```
