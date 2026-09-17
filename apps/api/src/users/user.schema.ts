@@ -2,6 +2,7 @@ import { type InferSchemaType, Schema } from 'mongoose';
 import { USER_ROLES } from '@finance/shared';
 
 export const USER_MODEL = 'User';
+export const USER_COLLECTION = 'users';
 
 export const userSchema = new Schema(
   {
@@ -15,7 +16,7 @@ export const userSchema = new Schema(
     avatarUrl: { type: String, required: true },
     role: { type: String, enum: USER_ROLES, required: true, default: 'analyst' },
   },
-  { timestamps: true, collection: 'users' },
+  { timestamps: true, collection: USER_COLLECTION },
 );
 
 // Login looks users up by email; unique also stops two accounts sharing one address.
