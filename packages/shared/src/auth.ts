@@ -15,7 +15,8 @@ export const userResponseSchema = z.object({
   externalId: z.string().nullable(),
   email: z.email(),
   name: z.string(),
-  avatarUrl: z.url(),
+  // An absolute DiceBear URL, or a relative API path once the user uploads a photo.
+  avatarUrl: z.string(),
   role: z.enum(USER_ROLES),
 });
 export type UserResponse = z.infer<typeof userResponseSchema>;
@@ -41,7 +42,8 @@ export const userOptionSchema = z.object({
   id: z.string(),
   externalId: z.string().nullable(),
   name: z.string(),
-  avatarUrl: z.url(),
+  // An absolute DiceBear URL, or a relative API path once the user uploads a photo.
+  avatarUrl: z.string(),
 });
 export type UserOption = z.infer<typeof userOptionSchema>;
 
@@ -49,3 +51,13 @@ export const userListResponseSchema = z.object({
   data: z.array(userOptionSchema),
 });
 export type UserListResponse = z.infer<typeof userListResponseSchema>;
+
+export const updateProfileRequestSchema = z.object({
+  name: z.string().trim().min(1, 'enter a name').max(80),
+});
+export type UpdateProfileRequest = z.infer<typeof updateProfileRequestSchema>;
+
+// Profile photos: the browser shrinks them before upload; the server still enforces both.
+export const MAX_AVATAR_BYTES = 2 * 1024 * 1024;
+export const AVATAR_CONTENT_TYPES = ['image/png', 'image/jpeg', 'image/webp'] as const;
+export type AvatarContentType = (typeof AVATAR_CONTENT_TYPES)[number];
