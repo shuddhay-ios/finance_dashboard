@@ -14,6 +14,13 @@ export class AllExceptionsFilter implements ExceptionFilter {
     const response = http.getResponse<Response>();
 
     // Our genReqId always returns a string; anything else means the logger didn't run.
+    // A streamed download can fail after the headers are sent; no envelope is possible then.
+    if (response.headersSent) {
+      this.logger.error({ err: exception }, 'Error after response started');
+      response.end();
+      return;
+    }
+
     const requestId = typeof request.id === 'string' ? request.id : null;
     const { status, envelope } = toErrorResponse(exception, requestId);
 
