@@ -18,6 +18,7 @@ describe('parseEnv', () => {
       ACCESS_TOKEN_TTL_SECONDS: 900,
       REFRESH_TOKEN_TTL_DAYS: 7,
       LOGIN_ATTEMPTS_PER_MINUTE: 5,
+      TRUST_PROXY_HOPS: 1,
     });
   });
 

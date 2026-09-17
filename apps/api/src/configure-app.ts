@@ -2,15 +2,17 @@ import type { NestExpressApplication } from '@nestjs/platform-express';
 import cookieParser from 'cookie-parser';
 import helmet from 'helmet';
 import { Logger } from 'nestjs-pino';
+import { ENV } from './config/config.module';
+import type { Env } from './config/env';
 
 export const API_PREFIX = 'api/v1';
 
 /** App-wide setup shared by main.ts and the integration tests, so tests run the real config. */
 export function configureApp(app: NestExpressApplication): void {
   app.useLogger(app.get(Logger));
-  // Render puts one proxy in front of the app. Trusting it makes request.ip the real
-  // client address, which the login rate limit counts by.
-  app.set('trust proxy', 1);
+  // Trusting the proxies in front of the app (nginx, Render, Vercel) makes request.ip the
+  // real client address, which the login rate limit counts by.
+  app.set('trust proxy', app.get<Env>(ENV).TRUST_PROXY_HOPS);
   // Sets safe default security headers (no MIME sniffing, no framing, HSTS, ...).
   app.use(helmet());
   // Reads the refresh token cookie.

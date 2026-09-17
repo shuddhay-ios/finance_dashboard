@@ -12,6 +12,9 @@ export const envSchema = z.object({
   ACCESS_TOKEN_TTL_SECONDS: z.coerce.number().int().positive().default(900),
   REFRESH_TOKEN_TTL_DAYS: z.coerce.number().int().positive().default(7),
   LOGIN_ATTEMPTS_PER_MINUTE: z.coerce.number().int().positive().default(5),
+  // How many proxies sit in front of the API: 1 behind nginx (Docker) or Render alone,
+  // 2 when Vercel forwards to Render. Needed to see the real client IP for rate limiting.
+  TRUST_PROXY_HOPS: z.coerce.number().int().min(0).default(1),
 });
 
 export type Env = z.infer<typeof envSchema>;
