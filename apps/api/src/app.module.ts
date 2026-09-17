@@ -8,6 +8,7 @@ import { LoggingModule } from './common/logging/logging.module';
 import { ConfigModule } from './config/config.module';
 import type { Env } from './config/env';
 import { DatabaseModule } from './database/database.module';
+import { ExportsModule } from './exports/exports.module';
 import { HealthModule } from './health/health.module';
 import { TransactionsModule } from './transactions/transactions.module';
 
@@ -24,6 +25,7 @@ export class AppModule {
         AuthModule,
         TransactionsModule,
         AnalyticsModule,
+        ExportsModule,
       ],
       providers: [
         { provide: APP_FILTER, useClass: AllExceptionsFilter },

@@ -41,6 +41,9 @@ describe('API docs', () => {
         '/api/v1/analytics/summary',
         '/api/v1/analytics/trends',
         '/api/v1/analytics/breakdown',
+        '/api/v1/exports',
+        '/api/v1/exports/{token}/download',
+        '/api/v1/export-templates',
       ]),
     );
   });

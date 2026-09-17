@@ -12,7 +12,8 @@ const SORT_PATHS: Record<Exclude<SortField, 'user'>, string> = {
   status: 'status',
 };
 
-const JOIN_USER: PipelineStage[] = [
+// Also used by the CSV export, so both show the same user fields.
+export const JOIN_USER: PipelineStage[] = [
   {
     $lookup: {
       from: USER_COLLECTION,
