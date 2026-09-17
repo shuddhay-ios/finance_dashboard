@@ -11,6 +11,7 @@ import {
   TRANSACTION_STATUSES,
   type TransactionCategory,
   type TransactionStatus,
+  type TransactionFilterQuery,
 } from '@finance/shared';
 
 export const PAGE_SIZES = [10, 25, 50] as const;
@@ -162,6 +163,36 @@ export function filterParams(view: DashboardView): URLSearchParams {
   view.statuses.forEach((status) => params.append('status', status));
   view.userIds.forEach((userId) => params.append('userId', userId));
   return params;
+}
+
+/** The same filters as a JSON object, for request bodies (the CSV export). */
+export function filterQuery(view: DashboardView): TransactionFilterQuery {
+  const query: TransactionFilterQuery = {};
+  if (view.search) {
+    query.search = view.search;
+  }
+  if (view.dateFrom) {
+    query.dateFrom = view.dateFrom;
+  }
+  if (view.dateTo) {
+    query.dateTo = view.dateTo;
+  }
+  if (view.amountMin) {
+    query.amountMin = Number(view.amountMin);
+  }
+  if (view.amountMax) {
+    query.amountMax = Number(view.amountMax);
+  }
+  if (view.categories.length > 0) {
+    query.category = view.categories;
+  }
+  if (view.statuses.length > 0) {
+    query.status = view.statuses;
+  }
+  if (view.userIds.length > 0) {
+    query.userId = view.userIds;
+  }
+  return query;
 }
 
 /** Filters plus paging and sorting, for GET /transactions. */

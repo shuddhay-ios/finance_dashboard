@@ -3,6 +3,7 @@ import {
   DEFAULT_VIEW,
   type DashboardView,
   activeFilters,
+  filterQuery,
   isRefiningText,
   listParams,
   readView,
@@ -94,5 +95,17 @@ describe('isRefiningText', () => {
     expect(isRefiningText('', 'p')).toBe(false);
     expect(isRefiningText(null, '100')).toBe(false);
     expect(isRefiningText('priya', '')).toBe(false);
+  });
+});
+
+describe('filterQuery', () => {
+  it('gives only the active filters, with amounts as numbers', () => {
+    expect(
+      filterQuery({ ...DEFAULT_VIEW, amountMin: '1200.50', statuses: ['Paid'], sortBy: 'amount' }),
+    ).toEqual({ amountMin: 1200.5, status: ['Paid'] });
+  });
+
+  it('is empty when nothing is filtered', () => {
+    expect(filterQuery(DEFAULT_VIEW)).toEqual({});
   });
 });
