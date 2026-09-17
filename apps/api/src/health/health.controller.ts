@@ -2,6 +2,7 @@ import { Controller, Get, HttpStatus } from '@nestjs/common';
 import { InjectConnection } from '@nestjs/mongoose';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import type { Connection } from 'mongoose';
+import { Public } from '../auth/public.decorator';
 import { AppError } from '../common/errors/app-error';
 
 function databaseUnavailable(): AppError {
@@ -12,6 +13,8 @@ function databaseUnavailable(): AppError {
   );
 }
 
+// Public: Docker, Render and uptime monitors call these without logging in.
+@Public()
 @ApiTags('health')
 @Controller('health')
 export class HealthController {
