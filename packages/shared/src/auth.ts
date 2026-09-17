@@ -35,3 +35,17 @@ export const meResponseSchema = z.object({
   user: userResponseSchema,
 });
 export type MeResponse = z.infer<typeof meResponseSchema>;
+
+// Just enough to show a person in a filter or an avatar list: no email, no role.
+export const userOptionSchema = z.object({
+  id: z.string(),
+  externalId: z.string().nullable(),
+  name: z.string(),
+  avatarUrl: z.url(),
+});
+export type UserOption = z.infer<typeof userOptionSchema>;
+
+export const userListResponseSchema = z.object({
+  data: z.array(userOptionSchema),
+});
+export type UserListResponse = z.infer<typeof userListResponseSchema>;

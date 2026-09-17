@@ -39,6 +39,15 @@ export class UsersService {
       .exec();
   }
 
+  /** Users that come from the dataset (they have an externalId), sorted by name. */
+  findAllWithTransactions(): Promise<UserRecord[]> {
+    return this.userModel
+      .find({ externalId: { $ne: null } })
+      .sort({ name: 1 })
+      .lean<UserRecord[]>()
+      .exec();
+  }
+
   /** Translates the ids users see ("user_001") into the ObjectIds stored on transactions. */
   async findIdsByExternalIds(externalIds: string[]): Promise<Types.ObjectId[]> {
     const users = await this.userModel
