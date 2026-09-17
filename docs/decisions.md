@@ -105,3 +105,49 @@ alternative, and why.
 - **Picked:** `@nestjs/throttler` on `POST /auth/login`, 5 attempts per minute per IP (`LOGIN_ATTEMPTS_PER_MINUTE`).
 - **Why:** login is the only endpoint where guessing works; refresh tokens are unguessable. `trust proxy` is set so the limit counts the real client IP behind Render's proxy.
 - **Limit:** counters live in memory, so each API instance counts separately. With several instances this would need Redis.
+
+## Transactions and analytics
+
+### One filter function for every endpoint
+
+- **Picked:** `buildTransactionMatch(filters, users)` in `transactions/build-transaction-match.ts` is the only code that turns filters into a MongoDB query. The table, the three analytics endpoints and the CSV export all call it.
+- **Alternative:** each endpoint builds its own query.
+- **Why:** "the export contains what I'm looking at" and "the cards agree with the table" become true by construction instead of by discipline. There is one place to test and one place to fix.
+- It is **pure** (no database access). Transactions store a user's ObjectId, but people filter by `user_001` and search by name, so `TransactionFilterService` looks those ids up first and passes them in.
+
+### Filter semantics
+
+- Different fields combine with AND; several values of one field (`?status=Paid&status=Pending`) combine with OR.
+- Dates are UTC. `dateTo=2024-03-31` includes all of 31 March: internally every range is "`>= from` and `< exclusive end`", and a bare date's exclusive end is the next midnight.
+- Amounts in the query are dollars and are converted to cents once, in `normalizeFilters`. Both ends are inclusive.
+- `limit` above 100 is capped rather than rejected; `0`, negative or non-numeric values are rejected.
+- Search is case-insensitive "contains" on category, status, and the user's name, email and id, plus an exact match on amount (and transaction id for whole numbers). User input is regex-escaped. There is no description field in the data, so no free-text search is claimed.
+
+### Join users after paginating (except when sorting by user)
+
+- For date, amount, category and status sorts the pipeline is `$match → $sort → $skip/$limit → $lookup`, so users are joined for 25 rows, not all matches, and the sort can use an index.
+- Sorting by user name needs the name before sorting, so that one sort joins first. Fine at 300 rows; see "What breaks at scale" below.
+- The `$lookup` projects only public user fields, so `passwordHash` cannot leak through the join.
+
+### Deltas compare against the equal-length window immediately before
+
+- A 31-day range (March) compares with the 31 days before 1 March, not "February". This is the literal "preceding equal-length period" and works for any custom range, not just calendar months.
+- Without both `dateFrom` and `dateTo` there is no window, so deltas are `null`. A previous value of 0 also gives `null`, never `Infinity`.
+
+### Empty periods are filled in application code
+
+- MongoDB groups rows with `$dateTrunc`; `periods.ts` then lists every day/week/month in the range and fills missing ones with zero.
+- **Alternative:** MongoDB's `$densify` + `$fill`.
+- **Why:** the TypeScript version is a small pure function with unit tests for leap years, Sunday-to-Monday weeks and year boundaries. Weeks start on Monday (ISO 8601).
+- A trend is capped at 1000 points (e.g. 25 years of days is refused with `VALIDATION_FAILED`), so a request can't build a huge response.
+
+### Breakdown percentages always add up to 100
+
+- Shares are computed with the largest remainder method, so three equal groups show 33.34 / 33.33 / 33.33 rather than a total of 99.99.
+
+### What breaks at scale (100× data or more)
+
+- `skip`-based pagination gets slower on deep pages; cursor ("after this date and id") pagination would fix it.
+- Sorting by user name joins every matching row; storing the user's name on each transaction would make it indexable.
+- `countDocuments` runs on every page request; for millions of rows an estimated count or a cached total would be cheaper.
+- Case-insensitive "contains" regex can't use an index; a text or Atlas Search index would be needed.
