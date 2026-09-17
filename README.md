@@ -6,9 +6,15 @@ the columns and their order.
 
 **Stack:** NestJS 11 · MongoDB 7 (Mongoose 8) · zod · React + TypeScript · pnpm monorepo
 
-> 🚧 Work in progress. Done so far: project foundation, data model, seed, logging, error
-> handling, health checks, API docs. Next: authentication, then the data and export API,
-> then the web app.
+> 🚧 Work in progress. Done so far: project foundation, data model, seed, authentication
+> (login, refresh-token rotation with reuse detection, logout), logging, error handling, health
+> checks, API docs. Next: the transactions, analytics and export API, then the web app.
+
+## Demo login
+
+Any of the four seeded users, all with the password `Analyst@2024`:
+
+`priya.sharma@example.com` · `rohan.mehta@example.com` · `ananya.iyer@example.com` · `kabir.singh@example.com`
 
 ## Quick start
 
@@ -44,6 +50,28 @@ pnpm --filter @finance/api dev
 pnpm lint
 pnpm typecheck
 pnpm test        # unit + integration; integration tests use an in-memory MongoDB, no setup needed
+```
+
+## API so far
+
+All routes are under `/api/v1` and require `Authorization: Bearer <accessToken>` unless marked public.
+Every error has the same shape: `{ code, message, details, requestId }`.
+
+| Method | Path            | Auth                 | What it does                                                                |
+| ------ | --------------- | -------------------- | --------------------------------------------------------------------------- |
+| POST   | `/auth/login`   | public, 5/min per IP | `{ email, password }` → `{ accessToken, user }` and sets the refresh cookie |
+| POST   | `/auth/refresh` | refresh cookie       | New access token; the refresh cookie is rotated                             |
+| POST   | `/auth/logout`  | refresh cookie       | Ends the session, clears the cookie (`204`)                                 |
+| GET    | `/auth/me`      | bearer               | The logged-in user                                                          |
+| GET    | `/health`       | public               | Liveness                                                                    |
+| GET    | `/health/ready` | public               | Readiness (pings MongoDB)                                                   |
+
+Full, always-current docs: `/api/docs` (Swagger).
+
+Try it:
+
+```bash
+curl -X POST http://localhost:3000/api/v1/auth/login   -H 'content-type: application/json'   -d '{"email":"priya.sharma@example.com","password":"Analyst@2024"}'
 ```
 
 ## What the data told us
