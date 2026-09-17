@@ -250,3 +250,13 @@ export function resolveExportFilename(
 
   return `${safe || 'transactions'}.csv`;
 }
+
+/** The placeholders resolveExportFilename understands, for the modal's insert buttons. */
+export const FILENAME_VARIABLES = [
+  'dateFrom',
+  'dateTo',
+  'status',
+  'category',
+  'user',
+  'today',
+] as const;
