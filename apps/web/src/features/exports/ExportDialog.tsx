@@ -8,8 +8,12 @@ import {
 } from '@finance/shared';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import CloseIcon from '@mui/icons-material/Close';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
 import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
   Alert,
   Box,
   Button,
@@ -194,79 +198,8 @@ export function ExportDialog({ open, onClose, view }: ExportDialogProps) {
 
           <Grid item xs={12} md={7}>
             <Stack spacing={3}>
-              <Section step={3} title="Format">
-                <Stack direction="row" flexWrap="wrap" useFlexGap spacing={2} alignItems="center">
-                  <FormControl size="small" sx={{ minWidth: 160 }}>
-                    <InputLabel id="date-format-label">Date format</InputLabel>
-                    <Select
-                      labelId="date-format-label"
-                      label="Date format"
-                      value={settings.dateFormat}
-                      onChange={(event) => update({ dateFormat: event.target.value as DateFormat })}
-                    >
-                      {DATE_FORMATS.map((format) => (
-                        <MenuItem key={format} value={format}>
-                          {format}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                  <ToggleButtonGroup
-                    exclusive
-                    size="small"
-                    value={settings.delimiter}
-                    onChange={(_event, delimiter: Delimiter | null) =>
-                      delimiter && update({ delimiter })
-                    }
-                    aria-label="Separator"
-                  >
-                    {(Object.keys(DELIMITER_LABELS) as Delimiter[]).map((delimiter) => (
-                      <ToggleButton key={delimiter} value={delimiter}>
-                        {DELIMITER_LABELS[delimiter]}
-                      </ToggleButton>
-                    ))}
-                  </ToggleButtonGroup>
-                  <FormControlLabel
-                    control={
-                      <Switch
-                        checked={settings.includeHeaders}
-                        onChange={(event) => update({ includeHeaders: event.target.checked })}
-                      />
-                    }
-                    label="Header row"
-                  />
-                </Stack>
-              </Section>
-
-              <Section step={4} title="File name">
-                <TextField
-                  size="small"
-                  fullWidth
-                  label="File name template"
-                  value={settings.filenameTemplate}
-                  onChange={(event) => update({ filenameTemplate: event.target.value })}
-                  helperText={
-                    <>
-                      Saves as <strong>{filename}</strong>
-                    </>
-                  }
-                />
-                <Stack direction="row" flexWrap="wrap" useFlexGap spacing={0.75} sx={{ mt: 1 }}>
-                  {FILENAME_VARIABLES.map((variable) => (
-                    <Chip
-                      key={variable}
-                      size="small"
-                      variant="outlined"
-                      label={`{${variable}}`}
-                      onClick={() =>
-                        update({ filenameTemplate: `${settings.filenameTemplate}_{${variable}}` })
-                      }
-                    />
-                  ))}
-                </Stack>
-              </Section>
-
               <Section
+                step={3}
                 title="Preview"
                 subtitle={
                   rowCount === undefined
@@ -282,6 +215,34 @@ export function ExportDialog({ open, onClose, view }: ExportDialogProps) {
                   isLoading={preview.isPending}
                 />
               </Section>
+
+              {/* Most people never need these, so they start collapsed. The summary line
+                  still shows the current choices, so nothing about the file is hidden. */}
+              <Accordion
+                disableGutters
+                elevation={0}
+                sx={{
+                  bgcolor: tokens.color.surfaceRaised,
+                  borderRadius: `${tokens.radius.sm}px`,
+                  '&::before': { display: 'none' },
+                }}
+              >
+                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                  <Box>
+                    <Typography variant="h3">Advanced options</Typography>
+                    <Typography variant="caption">
+                      {settings.dateFormat} · {DELIMITER_LABELS[settings.delimiter]} ·{' '}
+                      {settings.includeHeaders ? 'Header row' : 'No header row'} · {filename}
+                    </Typography>
+                  </Box>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <Stack spacing={3}>
+                    <AdvancedFormat settings={settings} update={update} />
+                    <AdvancedFilename settings={settings} update={update} filename={filename} />
+                  </Stack>
+                </AccordionDetails>
+              </Accordion>
             </Stack>
           </Grid>
         </Grid>
@@ -403,5 +364,91 @@ function SaveTemplate({ settings }: { settings: ExportSettings }) {
         Cancel
       </Button>
     </Stack>
+  );
+}
+
+interface AdvancedProps {
+  settings: ExportSettings;
+  update: (changes: Partial<ExportSettings>) => void;
+}
+
+function AdvancedFormat({ settings, update }: AdvancedProps) {
+  return (
+    <Box>
+      <Typography variant="body2" sx={{ fontWeight: 500, mb: 1.5 }}>
+        Format
+      </Typography>
+      <Stack direction="row" flexWrap="wrap" useFlexGap spacing={2} alignItems="center">
+        <FormControl size="small" sx={{ minWidth: 160 }}>
+          <InputLabel id="date-format-label">Date format</InputLabel>
+          <Select
+            labelId="date-format-label"
+            label="Date format"
+            value={settings.dateFormat}
+            onChange={(event) => update({ dateFormat: event.target.value as DateFormat })}
+          >
+            {DATE_FORMATS.map((format) => (
+              <MenuItem key={format} value={format}>
+                {format}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        <ToggleButtonGroup
+          exclusive
+          size="small"
+          value={settings.delimiter}
+          onChange={(_event, delimiter: Delimiter | null) => delimiter && update({ delimiter })}
+          aria-label="Separator"
+        >
+          {(Object.keys(DELIMITER_LABELS) as Delimiter[]).map((delimiter) => (
+            <ToggleButton key={delimiter} value={delimiter}>
+              {DELIMITER_LABELS[delimiter]}
+            </ToggleButton>
+          ))}
+        </ToggleButtonGroup>
+        <FormControlLabel
+          control={
+            <Switch
+              checked={settings.includeHeaders}
+              onChange={(event) => update({ includeHeaders: event.target.checked })}
+            />
+          }
+          label="Header row"
+        />
+      </Stack>
+    </Box>
+  );
+}
+
+function AdvancedFilename({ settings, update, filename }: AdvancedProps & { filename: string }) {
+  return (
+    <Box>
+      <TextField
+        size="small"
+        fullWidth
+        label="File name template"
+        value={settings.filenameTemplate}
+        onChange={(event) => update({ filenameTemplate: event.target.value })}
+        helperText={
+          <>
+            Saves as <strong>{filename}</strong>
+          </>
+        }
+      />
+      <Stack direction="row" flexWrap="wrap" useFlexGap spacing={0.75} sx={{ mt: 1 }}>
+        {FILENAME_VARIABLES.map((variable) => (
+          <Chip
+            key={variable}
+            size="small"
+            variant="outlined"
+            label={`{${variable}}`}
+            onClick={() =>
+              update({ filenameTemplate: `${settings.filenameTemplate}_{${variable}}` })
+            }
+          />
+        ))}
+      </Stack>
+    </Box>
   );
 }

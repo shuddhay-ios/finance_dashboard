@@ -167,7 +167,7 @@ describe('ExportDialog', () => {
       dateFormat: 'YYYY-MM-DD',
       delimiter: ',',
       includeHeaders: true,
-      filenameTemplate: 'transactions_{dateFrom}_to_{dateTo}',
+      filenameTemplate: 'transactions_{dates}',
       filters: { dateFrom: '2024-01-01', dateTo: '2024-03-31', status: ['Paid'] },
     });
     expect(
