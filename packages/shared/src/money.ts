@@ -31,3 +31,13 @@ export function fromMinorUnits(amountMinor: number): number {
   }
   return amountMinor / MINOR_UNITS_PER_MAJOR;
 }
+
+/** True when the amount can be stored exactly as whole cents (at most 2 decimal places). */
+export function hasAtMostTwoDecimals(amount: number): boolean {
+  try {
+    toMinorUnits(amount);
+    return true;
+  } catch {
+    return false;
+  }
+}
