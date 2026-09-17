@@ -110,7 +110,12 @@ function MetricCard({ icon, label, value, valueColor, footer, isLoading }: Metri
 
 function DeltaText({ change, higherIsBetter }: { change: number | null; higherIsBetter: boolean }) {
   if (change === null) {
-    return <Typography variant="caption">Pick a date range to compare</Typography>;
+    // No closed date range (or nothing before it), so there is nothing to compare with.
+    return (
+      <Typography variant="caption" title="Choose a date range to compare with the previous period">
+        — vs previous period
+      </Typography>
+    );
   }
 
   const isGood = change === 0 || change > 0 === higherIsBetter;

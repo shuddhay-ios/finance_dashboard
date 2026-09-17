@@ -88,14 +88,15 @@ export function BreakdownChart({
                       width: `${row.percentage}%`,
                       height: '100%',
                       borderRadius: 4,
-                      bgcolor: tokens.color.brand,
+                      // Same colours as the chart: green where revenue dominates, yellow for expenses.
+                      bgcolor:
+                        row.expense > row.revenue ? tokens.color.warning : tokens.color.brand,
                       transition: 'width 300ms ease',
                     }}
                   />
                 </Box>
                 <Typography variant="caption">
-                  Revenue {formatMoney(row.revenue)} · Expenses {formatMoney(row.expense)} ·{' '}
-                  {row.count} txns
+                  Net {formatMoney(row.net)} · {row.count} transactions
                 </Typography>
               </Box>
             ))}
