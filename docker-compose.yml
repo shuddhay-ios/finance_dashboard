@@ -1,0 +1,59 @@
+# One command for a reviewer: cp .env.example .env && docker compose up
+# Starts MongoDB, loads the dataset once, then starts the API on http://localhost:3000.
+services:
+  mongo:
+    image: mongo:7
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongo-data:/data/db
+    healthcheck:
+      test: ['CMD', 'mongosh', '--quiet', '--eval', "db.adminCommand('ping').ok"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+
+  # Runs once and exits. Safe to re-run: the seed upserts, it never duplicates.
+  seed:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    image: finance-dashboard-api
+    command: ['node', 'dist/seed/seed.js']
+    environment:
+      MONGODB_URI: mongodb://mongo:27017/finance
+      DEMO_PASSWORD: ${DEMO_PASSWORD:?Set DEMO_PASSWORD in .env (copy .env.example)}
+    depends_on:
+      mongo:
+        condition: service_healthy
+
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    image: finance-dashboard-api
+    ports:
+      - '3000:3000'
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      MONGODB_URI: mongodb://mongo:27017/finance
+    depends_on:
+      seed:
+        condition: service_completed_successfully
+    healthcheck:
+      # node:22-slim has no curl, so Node's built-in fetch does the check.
+      test:
+        [
+          'CMD',
+          'node',
+          '-e',
+          "fetch('http://localhost:3000/api/v1/health/ready').then((r) => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+
+volumes:
+  mongo-data:
