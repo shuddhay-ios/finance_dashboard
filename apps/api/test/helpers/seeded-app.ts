@@ -1,10 +1,11 @@
 import type { LoginResponse } from '@finance/shared';
-import { getModelToken } from '@nestjs/mongoose';
+import { getConnectionToken, getModelToken } from '@nestjs/mongoose';
 import type { NestExpressApplication } from '@nestjs/platform-express';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import type { Server } from 'node:http';
 import request from 'supertest';
 import rawTransactions from '../../src/seed/data/transactions.json';
+import { syncAllIndexes } from '../../src/database/sync-indexes';
 import { runSeed } from '../../src/seed/run-seed';
 import { TRANSACTION_MODEL } from '../../src/transactions/transaction.schema';
 import { USER_MODEL } from '../../src/users/user.schema';
@@ -23,6 +24,7 @@ export interface SeededApp {
 export async function startSeededApp(): Promise<SeededApp> {
   const mongo = await MongoMemoryServer.create();
   const app = await createTestApp(testEnv(mongo.getUri()));
+  await syncAllIndexes(app.get(getConnectionToken()));
   await runSeed(
     {
       UserModel: app.get(getModelToken(USER_MODEL)),

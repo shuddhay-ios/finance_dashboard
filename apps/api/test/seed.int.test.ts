@@ -4,6 +4,7 @@ import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose, { type Connection } from 'mongoose';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import rawTransactions from '../src/seed/data/transactions.json';
+import { syncAllIndexes } from '../src/database/sync-indexes';
 import { runSeed, type SeedModels } from '../src/seed/run-seed';
 import { TRANSACTION_MODEL, transactionSchema } from '../src/transactions/transaction.schema';
 import { USER_MODEL, userSchema } from '../src/users/user.schema';
@@ -22,6 +23,7 @@ describe('runSeed', () => {
       UserModel: connection.model(USER_MODEL, userSchema),
       TransactionModel: connection.model(TRANSACTION_MODEL, transactionSchema),
     };
+    await syncAllIndexes(connection);
     await runSeed(models, rawTransactions, DEMO_PASSWORD);
   });
 

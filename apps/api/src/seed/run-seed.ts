@@ -25,10 +25,6 @@ export async function runSeed(
 ): Promise<SeedResult> {
   const rawTransactions = rawTransactionsSchema.parse(rawData);
 
-  // The app starts with autoIndex off, so this is where indexes get created.
-  await UserModel.syncIndexes();
-  await TransactionModel.syncIndexes();
-
   const userSeeds = buildUserSeeds(rawTransactions);
   const passwordHash = await hashPassword(demoPassword);
   await UserModel.bulkWrite(
