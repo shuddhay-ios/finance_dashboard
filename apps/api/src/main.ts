@@ -1,5 +1,6 @@
 import 'reflect-metadata';
 import { NestFactory } from '@nestjs/core';
+import type { NestExpressApplication } from '@nestjs/platform-express';
 import { AppModule } from './app.module';
 import { parseEnv } from './config/env';
 import { loadEnvFileIfPresent } from './config/load-env-file';
@@ -12,7 +13,9 @@ async function bootstrap(): Promise<void> {
 
   // bufferLogs holds Nest's startup logs until the pino logger is attached, so every
   // line comes out as structured JSON.
-  const app = await NestFactory.create(AppModule.register(env), { bufferLogs: true });
+  const app = await NestFactory.create<NestExpressApplication>(AppModule.register(env), {
+    bufferLogs: true,
+  });
   configureApp(app);
   setupSwagger(app);
 
