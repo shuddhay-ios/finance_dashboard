@@ -1,5 +1,6 @@
 # One command for a reviewer: cp .env.example .env && docker compose up
-# Starts MongoDB, loads the dataset once, then starts the API on http://localhost:3000.
+# Starts MongoDB, loads the dataset once, starts the API, then the web app on
+# http://localhost:8080 (API docs stay available on http://localhost:3000/api/docs).
 services:
   mongo:
     image: mongo:7
@@ -58,6 +59,17 @@ services:
       interval: 10s
       timeout: 5s
       retries: 6
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+    image: finance-dashboard-web
+    ports:
+      - '8080:8080'
+    depends_on:
+      api:
+        condition: service_healthy
 
 volumes:
   mongo-data:

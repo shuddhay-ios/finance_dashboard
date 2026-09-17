@@ -24,12 +24,15 @@ cp .env.example .env
 docker compose up --build
 ```
 
-This starts MongoDB, loads the 300 transactions once, and starts the API:
+This starts MongoDB, loads the 300 transactions once, then starts the API and the web app:
 
-| URL                                       | What                              |
-| ----------------------------------------- | --------------------------------- |
-| http://localhost:3000/api/v1/health/ready | `{"status":"ok","database":"up"}` |
-| http://localhost:3000/api/docs            | Swagger API docs                  |
+| URL                                       | What                                            |
+| ----------------------------------------- | ----------------------------------------------- |
+| http://localhost:8080                     | **The app.** Log in with the demo account above |
+| http://localhost:3000/api/docs            | Swagger API docs                                |
+| http://localhost:3000/api/v1/health/ready | `{"status":"ok","database":"up"}`               |
+
+Stop with `docker compose down` (add `-v` to also wipe the database and re-seed next time).
 
 ### Without Docker (for development)
 
