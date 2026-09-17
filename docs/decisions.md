@@ -212,3 +212,11 @@ alternative, and why.
 
 - Colours, radii and sizes come from the Figma into one `theme/tokens.ts`, which the MUI theme is built from. No hex values are scattered through components.
 - The Figma's side "Recent transactions" panel became the breakdown panel with a dimension switcher, because the dataset's two categories make a fixed category chart meaningless.
+
+## Deployment
+
+- **Web:** Vercel serves the static build and rewrites `/api/*` to the API on Render (`vercel.json`). The browser only ever talks to the Vercel domain, so the `SameSite=Strict` refresh cookie is first-party. Locally, nginx in Docker Compose plays the same role.
+- **API:** Render runs `apps/api/Dockerfile` (`render.yaml`). The free plan sleeps when idle, so the first request after a while can take ~50 s.
+- **Database:** MongoDB Atlas free tier. The seed (data plus every index) is run once against Atlas from a developer machine; the API itself never builds indexes.
+- **Client IP behind proxies:** `TRUST_PROXY_HOPS` tells Express how many proxies to trust: 1 behind nginx, 2 behind Vercel → Render. Without it every visitor would appear as the proxy's IP and share one login rate limit.
+- **CI:** GitHub Actions runs lint, format check, type checks, all tests (with an in-memory MongoDB, no database service needed) and a production build, then builds both Docker images.
