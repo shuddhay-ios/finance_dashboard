@@ -6,6 +6,7 @@ import {
 } from '@finance/shared';
 import SearchIcon from '@mui/icons-material/Search';
 import {
+  Box,
   Button,
   Checkbox,
   Chip,
@@ -52,7 +53,20 @@ export function FilterBar({ view, updateView }: FilterBarProps) {
 
   return (
     <Stack spacing={1.5}>
-      <Stack direction="row" flexWrap="wrap" useFlexGap spacing={1.5}>
+      {/* A grid keeps every field the same width and stops a lone field on the last row
+          from stretching across the whole bar. */}
+      <Box
+        sx={{
+          display: 'grid',
+          gap: 1.5,
+          gridTemplateColumns: {
+            xs: '1fr',
+            sm: 'repeat(2, 1fr)',
+            md: 'repeat(3, 1fr)',
+            lg: 'repeat(6, 1fr)',
+          },
+        }}
+      >
         <SearchField
           value={view.search}
           onCommit={(search) =>
@@ -92,7 +106,7 @@ export function FilterBar({ view, updateView }: FilterBarProps) {
           selected={view.userIds}
           onChange={(userIds) => updateView({ userIds })}
         />
-      </Stack>
+      </Box>
 
       {chips.length > 0 && (
         <Stack direction="row" flexWrap="wrap" useFlexGap spacing={1} alignItems="center">
@@ -128,7 +142,7 @@ function SearchField({ value, onCommit }: { value: string; onCommit: (next: stri
       // Says exactly what is searchable: the data has no description field to search.
       placeholder="Search ID, user, status or amount"
       inputProps={{ 'aria-label': 'Search transactions' }}
-      sx={{ flex: '2 1 300px' }}
+      sx={{ gridColumn: { lg: 'span 2' } }}
       InputProps={{
         startAdornment: (
           <InputAdornment position="start">
@@ -158,7 +172,7 @@ function DateRangeFilter({ view, updateView }: FilterBarProps) {
 
   return (
     <>
-      <FormControl size="small" sx={{ flex: '1 1 150px' }}>
+      <FormControl size="small">
         <InputLabel id="date-preset-label">Date</InputLabel>
         <Select
           labelId="date-preset-label"
@@ -182,7 +196,6 @@ function DateRangeFilter({ view, updateView }: FilterBarProps) {
             InputLabelProps={{ shrink: true }}
             value={view.dateFrom ?? ''}
             onChange={(event) => updateView({ dateFrom: event.target.value || null })}
-            sx={{ flex: '1 1 150px' }}
           />
           <TextField
             size="small"
@@ -191,7 +204,6 @@ function DateRangeFilter({ view, updateView }: FilterBarProps) {
             InputLabelProps={{ shrink: true }}
             value={view.dateTo ?? ''}
             onChange={(event) => updateView({ dateTo: event.target.value || null })}
-            sx={{ flex: '1 1 150px' }}
           />
         </>
       )}
@@ -221,7 +233,6 @@ function AmountField({ label, value, onCommit }: AmountFieldProps) {
       onChange={(event) => AMOUNT.test(event.target.value) && setText(event.target.value)}
       inputProps={{ inputMode: 'decimal' }}
       InputProps={{ startAdornment: <InputAdornment position="start">$</InputAdornment> }}
-      sx={{ flex: '1 1 120px' }}
     />
   );
 }
@@ -243,7 +254,7 @@ function MultiSelectFilter<T extends string>({
   const labelOf = (value: T) => options.find((option) => option.value === value)?.label ?? value;
 
   return (
-    <FormControl size="small" sx={{ flex: '1 1 140px' }}>
+    <FormControl size="small">
       <InputLabel id={labelId}>{label}</InputLabel>
       <Select<T[]>
         multiple
