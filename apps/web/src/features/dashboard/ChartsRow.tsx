@@ -1,4 +1,4 @@
-import { Grid } from '@mui/material';
+import { Box } from '@mui/material';
 import type { UpdateView } from '../transactions/use-dashboard-view';
 import type { DashboardView } from '../transactions/url-filters';
 import { BreakdownChart } from './BreakdownChart';
@@ -16,27 +16,30 @@ export function ChartsRow({ view, updateView }: ChartsRowProps) {
   const breakdown = useBreakdown(view);
 
   return (
-    // Top-aligned: the breakdown card stays as tall as its content instead of being
-    // stretched to match the chart and left half empty.
-    <Grid container spacing={2} alignItems="flex-start">
-      {/* Side by side from 900px wide (md) rather than 1200px (lg), so the pair stays in one
-          row on a laptop or a zoomed-in browser. */}
-      <Grid item xs={12} md={8}>
-        <TrendChart
-          trends={trends.data}
-          isLoading={trends.isPending}
-          granularity={view.granularity}
-          onGranularityChange={(granularity) => updateView({ granularity })}
-        />
-      </Grid>
-      <Grid item xs={12} md={4}>
-        <BreakdownChart
-          breakdown={breakdown.data}
-          isLoading={breakdown.isPending}
-          dimension={view.dimension}
-          onDimensionChange={(dimension) => updateView({ dimension })}
-        />
-      </Grid>
-    </Grid>
+    // A plain CSS grid, like the rest of the page: MUI's Grid adds negative margins, which
+    // left this row a few pixels right of the filter bar and the table below it.
+    // Side by side from 900px (md) wide, stacked below that, and top-aligned so the
+    // breakdown card stays as tall as its content.
+    <Box
+      sx={{
+        display: 'grid',
+        gap: 2,
+        alignItems: 'start',
+        gridTemplateColumns: { xs: '1fr', md: '2fr 1fr' },
+      }}
+    >
+      <TrendChart
+        trends={trends.data}
+        isLoading={trends.isPending}
+        granularity={view.granularity}
+        onGranularityChange={(granularity) => updateView({ granularity })}
+      />
+      <BreakdownChart
+        breakdown={breakdown.data}
+        isLoading={breakdown.isPending}
+        dimension={view.dimension}
+        onDimensionChange={(dimension) => updateView({ dimension })}
+      />
+    </Box>
   );
 }

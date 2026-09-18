@@ -5,7 +5,7 @@ import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
 import PaymentsOutlinedIcon from '@mui/icons-material/PaymentsOutlined';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
-import { Box, Grid, Paper, Skeleton, Stack, Typography } from '@mui/material';
+import { Box, Paper, Skeleton, Stack, Typography } from '@mui/material';
 import type { ReactNode } from 'react';
 import { formatMoney, formatPercentChange } from '../../lib/format';
 import { tokens } from '../../theme/tokens';
@@ -19,7 +19,15 @@ export function MetricCards({ summary, isLoading }: MetricCardsProps) {
   const netIsPositive = (summary?.net ?? 0) >= 0;
 
   return (
-    <Grid container spacing={2}>
+    // A plain CSS grid, like the rest of the page: MUI's Grid adds negative margins that
+    // would leave this row a few pixels right of the other boxes.
+    <Box
+      sx={{
+        display: 'grid',
+        gap: 2,
+        gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', lg: 'repeat(4, 1fr)' },
+      }}
+    >
       <MetricCard
         icon={<PaymentsOutlinedIcon />}
         label="Total Revenue"
@@ -55,7 +63,7 @@ export function MetricCards({ summary, isLoading }: MetricCardsProps) {
         }
         isLoading={isLoading}
       />
-    </Grid>
+    </Box>
   );
 }
 
@@ -70,41 +78,39 @@ interface MetricCardProps {
 
 function MetricCard({ icon, label, value, valueColor, footer, isLoading }: MetricCardProps) {
   return (
-    <Grid item xs={12} sm={6} lg={3}>
-      <Paper sx={{ p: 2.5, height: '100%' }}>
-        <Stack direction="row" spacing={2} alignItems="center">
-          <Box
-            sx={{
-              width: 44,
-              height: 44,
-              flexShrink: 0,
-              display: 'grid',
-              placeItems: 'center',
-              borderRadius: `${tokens.radius.sm}px`,
-              bgcolor: tokens.color.surfaceRaised,
-              color: tokens.color.brand,
-            }}
-          >
-            {icon}
-          </Box>
-          <Box sx={{ minWidth: 0 }}>
-            <Typography variant="caption">{label}</Typography>
-            {/* Skeletons keep the card's shape while loading, so nothing jumps when data arrives. */}
-            {isLoading || value === undefined ? (
-              <Skeleton width={120} height={36} />
-            ) : (
-              <Typography
-                sx={{ fontSize: '1.5rem', fontWeight: 600, color: valueColor, lineHeight: 1.4 }}
-                noWrap
-              >
-                {value}
-              </Typography>
-            )}
-          </Box>
-        </Stack>
-        <Box sx={{ mt: 1.5, minHeight: 20 }}>{isLoading ? <Skeleton width={140} /> : footer}</Box>
-      </Paper>
-    </Grid>
+    <Paper sx={{ p: 2.5, height: '100%' }}>
+      <Stack direction="row" spacing={2} alignItems="center">
+        <Box
+          sx={{
+            width: 44,
+            height: 44,
+            flexShrink: 0,
+            display: 'grid',
+            placeItems: 'center',
+            borderRadius: `${tokens.radius.sm}px`,
+            bgcolor: tokens.color.surfaceRaised,
+            color: tokens.color.brand,
+          }}
+        >
+          {icon}
+        </Box>
+        <Box sx={{ minWidth: 0 }}>
+          <Typography variant="caption">{label}</Typography>
+          {/* Skeletons keep the card's shape while loading, so nothing jumps when data arrives. */}
+          {isLoading || value === undefined ? (
+            <Skeleton width={120} height={36} />
+          ) : (
+            <Typography
+              sx={{ fontSize: '1.5rem', fontWeight: 600, color: valueColor, lineHeight: 1.4 }}
+              noWrap
+            >
+              {value}
+            </Typography>
+          )}
+        </Box>
+      </Stack>
+      <Box sx={{ mt: 1.5, minHeight: 20 }}>{isLoading ? <Skeleton width={140} /> : footer}</Box>
+    </Paper>
   );
 }
 
