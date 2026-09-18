@@ -13,6 +13,44 @@ Recharts · Docker
 
 ---
 
+## Highlights for reviewers
+
+**Code quality**
+
+- One source of truth: request/response schemas, money conversion and CSV cell formatting live in
+  `packages/shared`, so the API validates and the web app types itself from the same code.
+- **222 tests** (unit, integration against a real in-memory MongoDB, and component tests). Expected
+  values come from the raw dataset, not from application code, so a test can't agree with a bug.
+- Lint, formatting, strict types, tests, a production build and both Docker images run in CI on
+  every push.
+- 80 small conventional commits, a decision log in [`docs/decisions.md`](docs/decisions.md) that
+  records the alternative for every choice, and Docker images that run as a non-root user.
+
+**Problem-solving approach**
+
+- The dataset was analysed **before any code**: eight findings, each one changing the design (see
+  [What the data told us](#what-the-data-told-us)).
+- Money is stored as **integer cents**, because `19.99 * 100` is `1998.9999999999998` in JavaScript
+  and a finance app can't drift.
+- Filtering is written **once**, as a pure function every endpoint uses, so the table, the charts and
+  the export can never disagree.
+- Four real bugs found and fixed during development, each with a test
+  ([Problems found and fixed](#problems-found-and-fixed)).
+
+**Creativity**
+
+- The breakdown chart has a **switchable dimension** (category / status / user / month), because the
+  data has only two categories and a fixed pie chart would say nothing.
+- The export modal has **drag-to-reorder columns, presets, saved templates and a live preview of the
+  first five real rows**, rendered by the same code that writes the file.
+- Downloads use a **single-use token valid for 60 seconds**, so the browser performs a real streamed
+  download instead of building the file in memory.
+- Small touches from thinking about the reader of the file: a signed-amount column for accountants,
+  file names that describe their period, CSV injection protection, and a UTF-8 BOM so Excel shows
+  non-English names correctly.
+
+---
+
 ## Screenshots
 
 |                                                    |                                                    |
@@ -263,6 +301,21 @@ a reused or expired download link is refused · a text file renamed `photo.png` 
 searching `.*` is literal · percentages sum to exactly 100.
 
 ---
+
+## Problems found and fixed
+
+Four bugs caught during development. Each one has a test so it cannot come back.
+
+| Problem                                                   | How it showed up                                       | Cause                                                                                                                                 | Fix                                                                                                                     |
+| --------------------------------------------------------- | ------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| **A value containing a line break would split a CSV row** | Found by testing `csv-stringify` before trusting it    | With Windows line endings the library quotes values containing `                                                                      |
+| `, but not a lone `                                       |
+| `                                                         | Force quoting for `                                    |
+| `and`                                                     |
+| ` (`quoted_match`), covered by a unit test                |
+| **Duplicate export template names were accepted**         | An integration test expected a 400 and got a 201       | The uniqueness rule is a database index, and the new collection's indexes were never created (the API starts with `autoIndex: false`) | One `syncAllIndexes()` listing every collection, run by the seed and by the tests                                       |
+| **Back button stepped through half-typed searches**       | Found while clicking around the running app            | Each debounced search commit pushed a history entry, so "p" and "priya" were separate steps                                           | Starting or clearing a text filter pushes a history entry; refining one replaces it (`isRefiningText`, unit tested)     |
+| **Tests passed locally but timed out in CI**              | GitHub Actions failed with "Hook timed out in 60000ms" | Each integration file starts its own in-memory MongoDB; on a 2-core runner they started in parallel and exceeded the timeout          | Test files run one at a time when `CI` is set, with a longer start-up allowance; unchanged (and still parallel) locally |
 
 ## Out of scope (deliberately)
 
