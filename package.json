@@ -10,8 +10,8 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "typecheck": "pnpm --filter @finance/shared build && pnpm -r typecheck",
-    "test": "pnpm --filter @finance/shared build && pnpm -r test"
+    "typecheck": "pnpm --filter @finance/shared build && pnpm -r --workspace-concurrency=1 typecheck",
+    "test": "pnpm --filter @finance/shared build && pnpm -r --workspace-concurrency=1 test"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.5",
