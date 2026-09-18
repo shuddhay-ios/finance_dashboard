@@ -13,6 +13,19 @@ Recharts · Docker
 
 ---
 
+## Screenshots
+
+|                                                    |                                                    |
+| -------------------------------------------------- | -------------------------------------------------- |
+| ![Dashboard](docs/screenshots/dashboard.png)       | ![Export modal](docs/screenshots/export.png)       |
+| Dashboard: filters, metric cards, trend, breakdown | Export: drag-to-reorder columns and a live preview |
+| ![Transactions](docs/screenshots/transactions.png) | ![Analytics](docs/screenshots/analytics.png)       |
+| Transaction table with sorting and paging          | Analytics page                                     |
+
+![Login](docs/screenshots/login.png)
+
+---
+
 ## Demo login
 
 Any of the four seeded users, all with the password **`Analyst@2024`**:
