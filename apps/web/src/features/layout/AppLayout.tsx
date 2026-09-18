@@ -100,11 +100,10 @@ export function AppLayout() {
             bgcolor: 'background.paper',
             px: { xs: 1.5, md: 3 },
             py: 1.5,
-            // Header and page share the same maximum width, so the title lines up with the
-            // content below it and nothing stretches edge to edge on a wide monitor.
+            // Header and page share the same maximum width and both start right after the
+            // sidebar, so nothing stretches edge to edge and nothing drifts to the right.
             width: '100%',
             maxWidth: tokens.layout.contentMaxWidth,
-            mx: 'auto',
           }}
         >
           <IconButton
@@ -120,10 +119,7 @@ export function AppLayout() {
           <ProfileMenu onLogout={handleLogout} />
         </Stack>
 
-        <Box
-          component="main"
-          sx={{ p: { xs: 2, md: 3 }, maxWidth: tokens.layout.contentMaxWidth, mx: 'auto' }}
-        >
+        <Box component="main" sx={{ p: { xs: 2, md: 3 }, maxWidth: tokens.layout.contentMaxWidth }}>
           <Outlet />
         </Box>
       </Box>
