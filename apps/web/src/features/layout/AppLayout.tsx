@@ -98,7 +98,7 @@ export function AppLayout() {
           spacing={1}
           sx={{
             bgcolor: 'background.paper',
-            px: { xs: 1.5, md: 3 },
+            px: 2,
             py: 1.5,
             // Header and page share the same maximum width and both start right after the
             // sidebar, so nothing stretches edge to edge and nothing drifts to the right.

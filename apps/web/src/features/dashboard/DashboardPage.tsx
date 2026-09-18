@@ -12,7 +12,7 @@ export function DashboardPage() {
   const summary = useSummary(view);
 
   return (
-    <Stack spacing={3}>
+    <Stack spacing={2}>
       <FilterBar view={view} updateView={updateView} />
       <MetricCards summary={summary.data} isLoading={summary.isPending} />
       <ChartsRow view={view} updateView={updateView} />
@@ -26,7 +26,7 @@ export function TransactionsPage() {
   const { view, updateView } = useDashboardView();
 
   return (
-    <Stack spacing={3}>
+    <Stack spacing={2}>
       <FilterBar view={view} updateView={updateView} />
       <TransactionsPanel view={view} updateView={updateView} />
     </Stack>
@@ -39,7 +39,7 @@ export function AnalyticsPage() {
   const summary = useSummary(view);
 
   return (
-    <Stack spacing={3}>
+    <Stack spacing={2}>
       <FilterBar view={view} updateView={updateView} />
       <MetricCards summary={summary.data} isLoading={summary.isPending} />
       <ChartsRow view={view} updateView={updateView} />

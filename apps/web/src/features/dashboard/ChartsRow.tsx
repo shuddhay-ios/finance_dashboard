@@ -18,8 +18,8 @@ export function ChartsRow({ view, updateView }: ChartsRowProps) {
   return (
     // Top-aligned: the breakdown card stays as tall as its content instead of being
     // stretched to match the chart and left half empty.
-    <Grid container spacing={3} alignItems="flex-start">
-      <Grid item xs={12} lg={7}>
+    <Grid container spacing={2} alignItems="flex-start">
+      <Grid item xs={12} lg={8}>
         <TrendChart
           trends={trends.data}
           isLoading={trends.isPending}
@@ -27,7 +27,7 @@ export function ChartsRow({ view, updateView }: ChartsRowProps) {
           onGranularityChange={(granularity) => updateView({ granularity })}
         />
       </Grid>
-      <Grid item xs={12} lg={5}>
+      <Grid item xs={12} lg={4}>
         <BreakdownChart
           breakdown={breakdown.data}
           isLoading={breakdown.isPending}
