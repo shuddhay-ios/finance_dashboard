@@ -1,24 +1,33 @@
-// Design tokens taken from the Figma "Finance Dashboard UI". Every colour, radius and size
-// used in the app comes from here, so the look can be changed in one place.
+import { type AppPalette, cssVariableName } from './palettes';
+
+function colorVariables(): AppPalette {
+  const keys: (keyof AppPalette)[] = [
+    'canvas',
+    'surface',
+    'surfaceRaised',
+    'border',
+    'textPrimary',
+    'textSecondary',
+    'textMuted',
+    'brand',
+    'brandSoft',
+    'warning',
+    'warningSoft',
+    'danger',
+    'dangerSoft',
+  ];
+  return Object.fromEntries(
+    keys.map((key) => [key, `var(${cssVariableName(key)})`]),
+  ) as unknown as AppPalette;
+}
+
+/**
+ * Design tokens from the Figma. Colours are CSS variables rather than fixed values, so
+ * switching between the dark and light themes swaps them everywhere at once, with no
+ * component needing to know which theme is active.
+ */
 export const tokens = {
-  color: {
-    canvas: '#282C35',
-    surface: '#1C1F26',
-    surfaceRaised: '#2F333D',
-    border: '#353945',
-    textPrimary: '#FFFFFF',
-    textSecondary: '#A3A8B4',
-    textMuted: '#6E7482',
-    // Green: income, positive numbers, "Paid", primary actions.
-    brand: '#1FCB4F',
-    brandSoft: 'rgba(31, 203, 79, 0.14)',
-    // Yellow: expenses, "Pending".
-    warning: '#FFC01E',
-    warningSoft: 'rgba(255, 192, 30, 0.14)',
-    // Red: a negative net and errors.
-    danger: '#FF5B5B',
-    dangerSoft: 'rgba(255, 91, 91, 0.14)',
-  },
+  color: colorVariables(),
   radius: { sm: 6, md: 10, lg: 14 },
   font: {
     family: '"Poppins", "Segoe UI", system-ui, -apple-system, sans-serif',

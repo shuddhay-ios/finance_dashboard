@@ -4,6 +4,7 @@ import { Box, Button, CircularProgress, Paper, Stack, TextField, Typography } fr
 import { useForm } from 'react-hook-form';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { reportError } from '../../components/alert-chips/report-error';
+import { ThemeModeToggle } from '../../theme/ThemeModeToggle';
 import { tokens } from '../../theme/tokens';
 import { Logo } from '../layout/Logo';
 import { logIn } from './session';
@@ -68,7 +69,10 @@ export function LoginPage() {
           onSubmit={(event) => void handleSubmit(onSubmit)(event)}
         >
           <Box>
-            <Logo />
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <Logo />
+              <ThemeModeToggle />
+            </Box>
             <Typography variant="h1" sx={{ mt: 3 }}>
               Welcome back
             </Typography>

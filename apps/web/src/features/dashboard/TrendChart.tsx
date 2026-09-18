@@ -20,6 +20,7 @@ import {
 } from 'recharts';
 import { EmptyState } from '../../components/EmptyState';
 import { formatCompactMoney, formatMoney, formatPeriod, formatPeriodLong } from '../../lib/format';
+import { useAppPalette } from '../../theme/theme-mode';
 import { tokens } from '../../theme/tokens';
 
 const CHART_HEIGHT = 280;
@@ -43,6 +44,9 @@ export function TrendChart({
   granularity,
   onGranularityChange,
 }: TrendChartProps) {
+  // Recharts writes these straight into SVG attributes, which can't read CSS variables.
+  const palette = useAppPalette();
+
   return (
     <Paper sx={{ p: 2.5, height: '100%' }}>
       <Stack
@@ -56,8 +60,8 @@ export function TrendChart({
       >
         <Typography variant="h2">Revenue vs Expenses</Typography>
         <Stack direction="row" spacing={2} alignItems="center">
-          <LegendDot color={tokens.color.brand} label="Revenue" />
-          <LegendDot color={tokens.color.warning} label="Expenses" />
+          <LegendDot color={palette.brand} label="Revenue" />
+          <LegendDot color={palette.warning} label="Expenses" />
           <ToggleButtonGroup
             size="small"
             exclusive
@@ -82,31 +86,31 @@ export function TrendChart({
         ) : (
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={trends.series} margin={{ top: 8, right: 8, bottom: 0, left: 0 }}>
-              <CartesianGrid vertical={false} stroke={tokens.color.border} strokeDasharray="3 3" />
+              <CartesianGrid vertical={false} stroke={palette.border} strokeDasharray="3 3" />
               <XAxis
                 dataKey="period"
                 tickFormatter={(period: string) => formatPeriod(period, trends.granularity)}
-                tick={{ fill: tokens.color.textMuted, fontSize: 12 }}
+                tick={{ fill: palette.textMuted, fontSize: 12 }}
                 axisLine={false}
                 tickLine={false}
                 minTickGap={16}
               />
               <YAxis
                 tickFormatter={(value: number) => formatCompactMoney(value)}
-                tick={{ fill: tokens.color.textMuted, fontSize: 12 }}
+                tick={{ fill: palette.textMuted, fontSize: 12 }}
                 axisLine={false}
                 tickLine={false}
                 width={64}
               />
               <Tooltip
                 content={<TrendTooltip granularity={trends.granularity} />}
-                cursor={{ stroke: tokens.color.border }}
+                cursor={{ stroke: palette.border }}
               />
               <Line
                 type="monotone"
                 dataKey="revenue"
                 name="Revenue"
-                stroke={tokens.color.brand}
+                stroke={palette.brand}
                 strokeWidth={2}
                 dot={false}
                 activeDot={{ r: 4 }}
@@ -115,7 +119,7 @@ export function TrendChart({
                 type="monotone"
                 dataKey="expense"
                 name="Expenses"
-                stroke={tokens.color.warning}
+                stroke={palette.warning}
                 strokeWidth={2}
                 dot={false}
                 activeDot={{ r: 4 }}

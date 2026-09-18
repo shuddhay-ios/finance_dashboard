@@ -1,4 +1,3 @@
-import { CssBaseline, ThemeProvider } from '@mui/material';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
@@ -7,7 +6,7 @@ import { App } from './App';
 import { AlertChipStack } from './components/alert-chips/AlertChipStack';
 import { restoreSession } from './features/auth/session';
 import { queryClient } from './lib/query-client';
-import { theme } from './theme/theme';
+import { ThemeProvider } from './theme/ThemeProvider';
 
 const root = document.getElementById('root');
 if (!root) {
@@ -19,8 +18,7 @@ void restoreSession();
 
 createRoot(root).render(
   <StrictMode>
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
+    <ThemeProvider>
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
           <App />

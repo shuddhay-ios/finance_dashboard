@@ -25,6 +25,7 @@ import {
 import { type ReactNode, useState } from 'react';
 import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { reportError } from '../../components/alert-chips/report-error';
+import { ThemeModeToggle } from '../../theme/ThemeModeToggle';
 import { tokens } from '../../theme/tokens';
 import { useAuthStore } from '../auth/auth-store';
 import { logOut } from '../auth/session';
@@ -116,6 +117,7 @@ export function AppLayout() {
           <Typography variant="h1" sx={{ flex: 1 }} noWrap>
             {PAGE_TITLES[location.pathname] ?? 'Dashboard'}
           </Typography>
+          <ThemeModeToggle />
           <ProfileMenu onLogout={handleLogout} />
         </Stack>
 
