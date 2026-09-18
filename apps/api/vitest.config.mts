@@ -7,8 +7,11 @@ export default defineConfig({
   plugins: [swc.vite({ module: { type: 'es6' } })],
   test: {
     include: ['src/**/*.test.ts', 'test/**/*.test.ts'],
-    // Starting an in-memory MongoDB takes a few seconds, longer on a cold CI runner.
-    hookTimeout: 60_000,
-    testTimeout: 30_000,
+    // Each integration test file starts its own in-memory MongoDB. GitHub's runners have two
+    // cores, so running the files in parallel there can exceed the start-up timeout; locally
+    // parallel is much faster.
+    fileParallelism: !process.env.CI,
+    hookTimeout: 120_000,
+    testTimeout: 60_000,
   },
 });
