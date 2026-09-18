@@ -35,6 +35,9 @@ export function BreakdownChart({
   dimension,
   onDimensionChange,
 }: BreakdownChartProps) {
+  // Up to six rows can share the panel's height; more than that would squash them.
+  const fillsPanel = (breakdown?.data.length ?? 0) <= 6;
+
   return (
     <Paper sx={{ p: 2.5, height: '100%', display: 'flex', flexDirection: 'column' }}>
       <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 2 }}>
@@ -55,7 +58,7 @@ export function BreakdownChart({
       </Stack>
 
       {/* Fixed height with scrolling, so twelve months don't stretch the row. */}
-      <Box sx={{ flex: 1, minHeight: 280, maxHeight: 280, overflowY: 'auto', pr: 0.5 }}>
+      <Box sx={{ flex: 1, minHeight: 280, maxHeight: 360, overflowY: 'auto', pr: 0.5 }}>
         {isLoading ? (
           <Stack spacing={2}>
             {Array.from({ length: 4 }, (_, index) => (
@@ -65,9 +68,24 @@ export function BreakdownChart({
         ) : !breakdown || breakdown.data.length === 0 ? (
           <EmptyState title="Nothing to break down" />
         ) : (
-          <Stack component="ul" spacing={2} sx={{ listStyle: 'none', m: 0, p: 0 }}>
+          // A few rows spread out to fill the panel, so it doesn't look half empty next to
+          // the chart; twelve months keep their natural height and scroll instead.
+          <Stack
+            component="ul"
+            spacing={2}
+            sx={{ listStyle: 'none', m: 0, p: 0, height: fillsPanel ? '100%' : 'auto' }}
+          >
             {breakdown.data.map((row) => (
-              <Box component="li" key={row.key}>
+              <Box
+                component="li"
+                key={row.key}
+                sx={{
+                  flex: fillsPanel ? '1 1 0' : '0 0 auto',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                }}
+              >
                 <Stack direction="row" justifyContent="space-between" alignItems="baseline">
                   <Typography variant="body2" sx={{ fontWeight: 500 }} noWrap>
                     {row.label}
@@ -81,13 +99,18 @@ export function BreakdownChart({
                 </Stack>
                 <Box
                   role="presentation"
-                  sx={{ mt: 0.75, height: 8, borderRadius: 4, bgcolor: tokens.color.surfaceRaised }}
+                  sx={{
+                    mt: 0.75,
+                    height: 10,
+                    borderRadius: 5,
+                    bgcolor: tokens.color.surfaceRaised,
+                  }}
                 >
                   <Box
                     sx={{
                       width: `${row.percentage}%`,
                       height: '100%',
-                      borderRadius: 4,
+                      borderRadius: 5,
                       // Same colours as the chart: green where revenue dominates, yellow for expenses.
                       bgcolor:
                         row.expense > row.revenue ? tokens.color.warning : tokens.color.brand,

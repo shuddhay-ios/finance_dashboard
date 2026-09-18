@@ -25,6 +25,8 @@ export const tokens = {
   },
   layout: {
     sidebarWidth: 232,
+    // Stops the dashboard stretching across very wide monitors.
+    contentMaxWidth: 1440,
     // Below this width the table turns into cards and the sidebar hides.
     mobileMaxWidth: 767,
   },

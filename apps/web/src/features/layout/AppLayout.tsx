@@ -96,7 +96,16 @@ export function AppLayout() {
           direction="row"
           alignItems="center"
           spacing={1}
-          sx={{ bgcolor: 'background.paper', px: { xs: 1.5, md: 3 }, py: 1.5 }}
+          sx={{
+            bgcolor: 'background.paper',
+            px: { xs: 1.5, md: 3 },
+            py: 1.5,
+            // Header and page share the same maximum width, so the title lines up with the
+            // content below it and nothing stretches edge to edge on a wide monitor.
+            width: '100%',
+            maxWidth: tokens.layout.contentMaxWidth,
+            mx: 'auto',
+          }}
         >
           <IconButton
             aria-label="Open menu"
@@ -111,7 +120,10 @@ export function AppLayout() {
           <ProfileMenu onLogout={handleLogout} />
         </Stack>
 
-        <Box component="main" sx={{ p: { xs: 2, md: 3 } }}>
+        <Box
+          component="main"
+          sx={{ p: { xs: 2, md: 3 }, maxWidth: tokens.layout.contentMaxWidth, mx: 'auto' }}
+        >
           <Outlet />
         </Box>
       </Box>
