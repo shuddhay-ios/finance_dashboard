@@ -2,3 +2,5 @@ pnpm-lock.yaml
 dist
 coverage
 apps/api/src/seed/data/transactions.json
+# Exported by Postman and by Swagger; kept byte-identical to what the tools produce.
+docs/postman
