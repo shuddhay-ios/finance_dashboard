@@ -241,6 +241,11 @@ curl 'http://localhost:3000/api/v1/transactions?status=Pending&sortBy=amount&sor
 Interactive docs, generated from the same zod schemas that validate the traffic:
 **http://localhost:3000/api/docs**
 
+**Postman collection:** [`docs/postman/finance-dashboard.postman_collection.json`](docs/postman/finance-dashboard.postman_collection.json)
+— download and import it into Postman (Import → drop the file in). The raw OpenAPI document is
+alongside it at [`docs/postman/openapi.json`](docs/postman/openapi.json), and is also served live at
+`/api/docs-json`.
+
 ---
 
 ## Architecture

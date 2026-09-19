@@ -1,0 +1,1925 @@
+{
+  "info": {
+    "_postman_id": "40a919d9-3810-4769-9cea-85cec2f1f869",
+    "name": "Finance Dashboard API",
+    "description": "Transactions, analytics and CSV export for the financial analytics dashboard",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "58365653",
+    "_collection_link": "https://go.postman.co/collection/58365653-40a919d9-3810-4769-9cea-85cec2f1f869?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "api",
+      "item": [
+        {
+          "name": "v1",
+          "item": [
+            {
+              "name": "health",
+              "item": [
+                {
+                  "name": "ready",
+                  "item": [
+                    {
+                      "name": "Readiness: the API can reach MongoDB and serve requests",
+                      "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/v1/health/ready",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "v1",
+                            "health",
+                            "ready"
+                          ]
+                        }
+                      },
+                      "response": [
+                        {
+                          "name": "200",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/v1/health/ready",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "v1",
+                                "health",
+                                "ready"
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "body": ""
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "name": "Liveness: the process is running",
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/api/v1/health",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "v1",
+                        "health"
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "name": "200",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/v1/health",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "v1",
+                            "health"
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "body": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "auth",
+              "item": [
+                {
+                  "name": "login",
+                  "item": [
+                    {
+                      "name": "Log in; returns an access token and sets the refresh cookie",
+                      "request": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"email\": \"Iu6Y.beBdMnKIw@V58Y1SBE.W3.4GN3mdbkljq.GqC.kT40LytS.g-RIOqCNZ1i.02Jm6K0.uluZecifDaX\",\n  \"password\": \"string\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/api/v1/auth/login",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "v1",
+                            "auth",
+                            "login"
+                          ]
+                        }
+                      },
+                      "response": [
+                        {
+                          "name": "200",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"email\": \"Iu6Y.beBdMnKIw@V58Y1SBE.W3.4GN3mdbkljq.GqC.kT40LytS.g-RIOqCNZ1i.02Jm6K0.uluZecifDaX\",\n  \"password\": \"string\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/api/v1/auth/login",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "v1",
+                                "auth",
+                                "login"
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "body": "{\n  \"accessToken\": \"string\",\n  \"user\": {\n    \"id\": \"string\",\n    \"externalId\": \"string\",\n    \"email\": \"2gTmj.cIFrgIxOc.fJAzUmYT.tjHP-+Y_Kf.8Giat4bZ.wv.7BL1f2ml7Lx.+zc5TL.1@YW1YS.l.TrPjPtCa8Me.80VrM2r.jxV0VSFaLO.g.AA5VRGzA.fMrLJ.2w.T01y.QQolQDTxR\",\n    \"name\": \"string\",\n    \"avatarUrl\": \"string\",\n    \"role\": \"analyst\"\n  }\n}"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "name": "refresh",
+                  "item": [
+                    {
+                      "name": "Swap the refresh cookie for a new access token and a new cookie",
+                      "request": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/v1/auth/refresh",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "v1",
+                            "auth",
+                            "refresh"
+                          ]
+                        }
+                      },
+                      "response": [
+                        {
+                          "name": "200",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/v1/auth/refresh",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "v1",
+                                "auth",
+                                "refresh"
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "body": "{\n  \"accessToken\": \"string\"\n}"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "name": "logout",
+                  "item": [
+                    {
+                      "name": "End the session and clear the refresh cookie",
+                      "request": {
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/v1/auth/logout",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "v1",
+                            "auth",
+                            "logout"
+                          ]
+                        }
+                      },
+                      "response": [
+                        {
+                          "name": "204",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/v1/auth/logout",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "v1",
+                                "auth",
+                                "logout"
+                              ]
+                            }
+                          },
+                          "status": "No Content",
+                          "code": 204,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "body": ""
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "name": "me",
+                  "item": [
+                    {
+                      "name": "The logged-in user",
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{bearerToken}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/v1/auth/me",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "v1",
+                            "auth",
+                            "me"
+                          ]
+                        }
+                      },
+                      "response": [
+                        {
+                          "name": "200",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/v1/auth/me",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "v1",
+                                "auth",
+                                "me"
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "body": "{\n  \"user\": {\n    \"id\": \"string\",\n    \"externalId\": null,\n    \"email\": \"W_23Wiw+.xDSG6CS.O0L.3t'aRcb.pUwFdS.FVqQGXufp.9f5S@4G35sAUfvzK.sH.iIfURN\",\n    \"name\": \"string\",\n    \"avatarUrl\": \"string\",\n    \"role\": \"admin\"\n  }\n}"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "transactions",
+              "item": [
+                {
+                  "name": "Filter, search, sort and paginate transactions",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{bearerToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/api/v1/transactions?search=string&dateFrom=6852-02-06&dateTo=6852-02-06&amountMin=8491.15513927875&amountMax=8491.15513927875&category=Revenue&category=Revenue&status=Pending&status=Pending&userId=string&userId=string&page=1&limit=7143803965556530&sortBy=date&sortDir=desc",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "v1",
+                        "transactions"
+                      ],
+                      "query": [
+                        {
+                          "key": "search",
+                          "value": "string"
+                        },
+                        {
+                          "key": "dateFrom",
+                          "value": "6852-02-06"
+                        },
+                        {
+                          "key": "dateTo",
+                          "value": "6852-02-06"
+                        },
+                        {
+                          "key": "amountMin",
+                          "value": "8491.15513927875"
+                        },
+                        {
+                          "key": "amountMax",
+                          "value": "8491.15513927875"
+                        },
+                        {
+                          "key": "category",
+                          "value": "Revenue"
+                        },
+                        {
+                          "key": "category",
+                          "value": "Revenue"
+                        },
+                        {
+                          "key": "status",
+                          "value": "Pending"
+                        },
+                        {
+                          "key": "status",
+                          "value": "Pending"
+                        },
+                        {
+                          "key": "userId",
+                          "value": "string"
+                        },
+                        {
+                          "key": "userId",
+                          "value": "string"
+                        },
+                        {
+                          "key": "page",
+                          "value": "1"
+                        },
+                        {
+                          "key": "limit",
+                          "value": "7143803965556530"
+                        },
+                        {
+                          "key": "sortBy",
+                          "value": "date"
+                        },
+                        {
+                          "key": "sortDir",
+                          "value": "desc"
+                        }
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "name": "200",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/v1/transactions?search=string&dateFrom=6852-02-06&dateTo=6852-02-06&amountMin=8491.15513927875&amountMax=8491.15513927875&category=Revenue&status=Pending&userId=string&page=1&limit=7143803965556530&sortBy=date&sortDir=desc",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "v1",
+                            "transactions"
+                          ],
+                          "query": [
+                            {
+                              "key": "search",
+                              "value": "string"
+                            },
+                            {
+                              "key": "dateFrom",
+                              "value": "6852-02-06"
+                            },
+                            {
+                              "key": "dateTo",
+                              "value": "6852-02-06"
+                            },
+                            {
+                              "key": "amountMin",
+                              "value": "8491.15513927875"
+                            },
+                            {
+                              "key": "amountMax",
+                              "value": "8491.15513927875"
+                            },
+                            {
+                              "key": "category",
+                              "value": "Revenue"
+                            },
+                            {
+                              "key": "status",
+                              "value": "Pending"
+                            },
+                            {
+                              "key": "userId",
+                              "value": "string"
+                            },
+                            {
+                              "key": "page",
+                              "value": "1"
+                            },
+                            {
+                              "key": "limit",
+                              "value": "7143803965556530"
+                            },
+                            {
+                              "key": "sortBy",
+                              "value": "date"
+                            },
+                            {
+                              "key": "sortDir",
+                              "value": "desc"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "body": "{\n  \"data\": [\n    {\n      \"id\": \"string\",\n      \"externalId\": 3742051452362733,\n      \"date\": \"8148-02-29T23:50:45.389334Z\",\n      \"amount\": 6945.460259172981,\n      \"currency\": \"USD\",\n      \"category\": \"Expense\",\n      \"status\": \"Pending\",\n      \"user\": {\n        \"id\": \"string\",\n        \"externalId\": \"string\",\n        \"name\": \"string\",\n        \"email\": \"string\",\n        \"avatarUrl\": \"string\"\n      }\n    },\n    {\n      \"id\": \"string\",\n      \"externalId\": -1714401395547802,\n      \"date\": \"7763-02-27T00:37:39.101634Z\",\n      \"amount\": 3881.8350112215094,\n      \"currency\": \"USD\",\n      \"category\": \"Revenue\",\n      \"status\": \"Paid\",\n      \"user\": {\n        \"id\": \"string\",\n        \"externalId\": \"string\",\n        \"name\": \"string\",\n        \"email\": \"string\",\n        \"avatarUrl\": \"string\"\n      }\n    }\n  ],\n  \"page\": -1575105909190044,\n  \"limit\": 7413171415345827,\n  \"total\": -240807855271608,\n  \"totalPages\": 2683255918092697\n}"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "analytics",
+              "item": [
+                {
+                  "name": "summary",
+                  "item": [
+                    {
+                      "name": "Headline totals, with % change vs the previous equal-length period",
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{bearerToken}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/v1/analytics/summary?search=string&dateFrom=6852-02-06&dateTo=6852-02-06&amountMin=8491.15513927875&amountMax=8491.15513927875&category=Revenue&category=Revenue&status=Pending&status=Pending&userId=string&userId=string",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "v1",
+                            "analytics",
+                            "summary"
+                          ],
+                          "query": [
+                            {
+                              "key": "search",
+                              "value": "string"
+                            },
+                            {
+                              "key": "dateFrom",
+                              "value": "6852-02-06"
+                            },
+                            {
+                              "key": "dateTo",
+                              "value": "6852-02-06"
+                            },
+                            {
+                              "key": "amountMin",
+                              "value": "8491.15513927875"
+                            },
+                            {
+                              "key": "amountMax",
+                              "value": "8491.15513927875"
+                            },
+                            {
+                              "key": "category",
+                              "value": "Revenue"
+                            },
+                            {
+                              "key": "category",
+                              "value": "Revenue"
+                            },
+                            {
+                              "key": "status",
+                              "value": "Pending"
+                            },
+                            {
+                              "key": "status",
+                              "value": "Pending"
+                            },
+                            {
+                              "key": "userId",
+                              "value": "string"
+                            },
+                            {
+                              "key": "userId",
+                              "value": "string"
+                            }
+                          ]
+                        }
+                      },
+                      "response": [
+                        {
+                          "name": "200",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/v1/analytics/summary?search=string&dateFrom=6852-02-06&dateTo=6852-02-06&amountMin=8491.15513927875&amountMax=8491.15513927875&category=Revenue&status=Pending&userId=string",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "v1",
+                                "analytics",
+                                "summary"
+                              ],
+                              "query": [
+                                {
+                                  "key": "search",
+                                  "value": "string"
+                                },
+                                {
+                                  "key": "dateFrom",
+                                  "value": "6852-02-06"
+                                },
+                                {
+                                  "key": "dateTo",
+                                  "value": "6852-02-06"
+                                },
+                                {
+                                  "key": "amountMin",
+                                  "value": "8491.15513927875"
+                                },
+                                {
+                                  "key": "amountMax",
+                                  "value": "8491.15513927875"
+                                },
+                                {
+                                  "key": "category",
+                                  "value": "Revenue"
+                                },
+                                {
+                                  "key": "status",
+                                  "value": "Pending"
+                                },
+                                {
+                                  "key": "userId",
+                                  "value": "string"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "body": "{\n  \"totalRevenue\": 176.74211404498874,\n  \"totalExpense\": 1776.6223343709087,\n  \"net\": 9578.311996528062,\n  \"pendingAmount\": 7095.86793020097,\n  \"pendingCount\": -2279722449323724,\n  \"transactionCount\": 8361593563903847,\n  \"averageTransaction\": 1109.7862791477687,\n  \"deltas\": {\n    \"revenue\": 5033.732503379221,\n    \"expense\": null,\n    \"net\": 7904.491978169097\n  }\n}"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "name": "trends",
+                  "item": [
+                    {
+                      "name": "Revenue and expense per day, week or month; empty periods are zero",
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{bearerToken}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/v1/analytics/trends?search=string&dateFrom=6852-02-06&dateTo=6852-02-06&amountMin=8491.15513927875&amountMax=8491.15513927875&category=Revenue&category=Revenue&status=Pending&status=Pending&userId=string&userId=string&granularity=month",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "v1",
+                            "analytics",
+                            "trends"
+                          ],
+                          "query": [
+                            {
+                              "key": "search",
+                              "value": "string"
+                            },
+                            {
+                              "key": "dateFrom",
+                              "value": "6852-02-06"
+                            },
+                            {
+                              "key": "dateTo",
+                              "value": "6852-02-06"
+                            },
+                            {
+                              "key": "amountMin",
+                              "value": "8491.15513927875"
+                            },
+                            {
+                              "key": "amountMax",
+                              "value": "8491.15513927875"
+                            },
+                            {
+                              "key": "category",
+                              "value": "Revenue"
+                            },
+                            {
+                              "key": "category",
+                              "value": "Revenue"
+                            },
+                            {
+                              "key": "status",
+                              "value": "Pending"
+                            },
+                            {
+                              "key": "status",
+                              "value": "Pending"
+                            },
+                            {
+                              "key": "userId",
+                              "value": "string"
+                            },
+                            {
+                              "key": "userId",
+                              "value": "string"
+                            },
+                            {
+                              "key": "granularity",
+                              "value": "month"
+                            }
+                          ]
+                        }
+                      },
+                      "response": [
+                        {
+                          "name": "200",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/v1/analytics/trends?search=string&dateFrom=6852-02-06&dateTo=6852-02-06&amountMin=8491.15513927875&amountMax=8491.15513927875&category=Revenue&status=Pending&userId=string&granularity=month",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "v1",
+                                "analytics",
+                                "trends"
+                              ],
+                              "query": [
+                                {
+                                  "key": "search",
+                                  "value": "string"
+                                },
+                                {
+                                  "key": "dateFrom",
+                                  "value": "6852-02-06"
+                                },
+                                {
+                                  "key": "dateTo",
+                                  "value": "6852-02-06"
+                                },
+                                {
+                                  "key": "amountMin",
+                                  "value": "8491.15513927875"
+                                },
+                                {
+                                  "key": "amountMax",
+                                  "value": "8491.15513927875"
+                                },
+                                {
+                                  "key": "category",
+                                  "value": "Revenue"
+                                },
+                                {
+                                  "key": "status",
+                                  "value": "Pending"
+                                },
+                                {
+                                  "key": "userId",
+                                  "value": "string"
+                                },
+                                {
+                                  "key": "granularity",
+                                  "value": "month"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "body": "{\n  \"granularity\": \"month\",\n  \"series\": [\n    {\n      \"period\": \"string\",\n      \"revenue\": 4790.11893752215,\n      \"expense\": 1555.8428137695257,\n      \"net\": 8503.339674593532\n    },\n    {\n      \"period\": \"string\",\n      \"revenue\": 6997.583043894172,\n      \"expense\": 7406.758058056396,\n      \"net\": 979.0866479295224\n    }\n  ]\n}"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "name": "breakdown",
+                  "item": [
+                    {
+                      "name": "Totals grouped by category, status, user or month",
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{bearerToken}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/v1/analytics/breakdown?search=string&dateFrom=6852-02-06&dateTo=6852-02-06&amountMin=8491.15513927875&amountMax=8491.15513927875&category=Revenue&category=Revenue&status=Pending&status=Pending&userId=string&userId=string&dimension=category",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "v1",
+                            "analytics",
+                            "breakdown"
+                          ],
+                          "query": [
+                            {
+                              "key": "search",
+                              "value": "string"
+                            },
+                            {
+                              "key": "dateFrom",
+                              "value": "6852-02-06"
+                            },
+                            {
+                              "key": "dateTo",
+                              "value": "6852-02-06"
+                            },
+                            {
+                              "key": "amountMin",
+                              "value": "8491.15513927875"
+                            },
+                            {
+                              "key": "amountMax",
+                              "value": "8491.15513927875"
+                            },
+                            {
+                              "key": "category",
+                              "value": "Revenue"
+                            },
+                            {
+                              "key": "category",
+                              "value": "Revenue"
+                            },
+                            {
+                              "key": "status",
+                              "value": "Pending"
+                            },
+                            {
+                              "key": "status",
+                              "value": "Pending"
+                            },
+                            {
+                              "key": "userId",
+                              "value": "string"
+                            },
+                            {
+                              "key": "userId",
+                              "value": "string"
+                            },
+                            {
+                              "key": "dimension",
+                              "value": "category"
+                            }
+                          ]
+                        }
+                      },
+                      "response": [
+                        {
+                          "name": "200",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/v1/analytics/breakdown?search=string&dateFrom=6852-02-06&dateTo=6852-02-06&amountMin=8491.15513927875&amountMax=8491.15513927875&category=Revenue&status=Pending&userId=string&dimension=category",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "v1",
+                                "analytics",
+                                "breakdown"
+                              ],
+                              "query": [
+                                {
+                                  "key": "search",
+                                  "value": "string"
+                                },
+                                {
+                                  "key": "dateFrom",
+                                  "value": "6852-02-06"
+                                },
+                                {
+                                  "key": "dateTo",
+                                  "value": "6852-02-06"
+                                },
+                                {
+                                  "key": "amountMin",
+                                  "value": "8491.15513927875"
+                                },
+                                {
+                                  "key": "amountMax",
+                                  "value": "8491.15513927875"
+                                },
+                                {
+                                  "key": "category",
+                                  "value": "Revenue"
+                                },
+                                {
+                                  "key": "status",
+                                  "value": "Pending"
+                                },
+                                {
+                                  "key": "userId",
+                                  "value": "string"
+                                },
+                                {
+                                  "key": "dimension",
+                                  "value": "category"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "body": "{\n  \"dimension\": \"month\",\n  \"data\": [\n    {\n      \"key\": \"string\",\n      \"label\": \"string\",\n      \"revenue\": 8622.503309492662,\n      \"expense\": 7101.299662211893,\n      \"net\": 2591.653616836561,\n      \"count\": 8751492400623853,\n      \"percentage\": 7706.637488373462\n    },\n    {\n      \"key\": \"string\",\n      \"label\": \"string\",\n      \"revenue\": 6578.335842381235,\n      \"expense\": 467.8141795544433,\n      \"net\": 4437.203695336387,\n      \"count\": -8005489967124033,\n      \"percentage\": 8042.213380152375\n    }\n  ]\n}"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "exports",
+              "item": [
+                {
+                  "name": "{token}",
+                  "item": [
+                    {
+                      "name": "download",
+                      "item": [
+                        {
+                          "name": "Download a prepared export (streamed CSV)",
+                          "request": {
+                            "method": "GET",
+                            "header": [],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/v1/exports/:token/download",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "v1",
+                                "exports",
+                                ":token",
+                                "download"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "token",
+                                  "value": "string"
+                                }
+                              ]
+                            }
+                          },
+                          "response": [
+                            {
+                              "name": "200",
+                              "originalRequest": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                  "raw": "{{baseUrl}}/api/v1/exports/:token/download",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "api",
+                                    "v1",
+                                    "exports",
+                                    ":token",
+                                    "download"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "token",
+                                      "value": "string"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "OK",
+                              "code": 200,
+                              "_postman_previewlanguage": "text",
+                              "header": [],
+                              "cookie": [],
+                              "body": ""
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "name": "Prepare a CSV export; returns a single-use link valid for 60 seconds",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{bearerToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"columns\": [\n    \"date\"\n  ],\n  \"dateFormat\": \"YYYY-MM-DD\",\n  \"delimiter\": \",\",\n  \"includeHeaders\": true,\n  \"filenameTemplate\": \"transactions_{dates}\",\n  \"filters\": {\n    \"search\": \"string\",\n    \"dateFrom\": \"2800-02-29\",\n    \"dateTo\": \"2893-02-26\",\n    \"amountMin\": 7192.4996798424845,\n    \"amountMax\": 8340.199172149158,\n    \"category\": [\n      \"Revenue\",\n      \"Revenue\"\n    ],\n    \"status\": [\n      \"Pending\",\n      \"Pending\"\n    ],\n    \"userId\": [\n      \"string\",\n      \"string\"\n    ]\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/api/v1/exports",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "v1",
+                        "exports"
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "name": "201",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"columns\": [\n    \"date\"\n  ],\n  \"dateFormat\": \"YYYY-MM-DD\",\n  \"delimiter\": \",\",\n  \"includeHeaders\": true,\n  \"filenameTemplate\": \"transactions_{dates}\",\n  \"filters\": {\n    \"search\": \"string\",\n    \"dateFrom\": \"2800-02-29\",\n    \"dateTo\": \"2893-02-26\",\n    \"amountMin\": 7192.4996798424845,\n    \"amountMax\": 8340.199172149158,\n    \"category\": [\n      \"Revenue\",\n      \"Revenue\"\n    ],\n    \"status\": [\n      \"Pending\",\n      \"Pending\"\n    ],\n    \"userId\": [\n      \"string\",\n      \"string\"\n    ]\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/api/v1/exports",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "v1",
+                            "exports"
+                          ]
+                        }
+                      },
+                      "status": "Created",
+                      "code": 201,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "body": "{\n  \"downloadToken\": \"string\",\n  \"expiresAt\": \"7336-02-29T21:04:14Z\",\n  \"estimatedRows\": -1957038834393800,\n  \"resolvedFilename\": \"string\"\n}"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "export-templates",
+              "item": [
+                {
+                  "name": "The logged-in user's saved export templates",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{bearerToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/api/v1/export-templates",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "v1",
+                        "export-templates"
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "name": "200",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/v1/export-templates",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "v1",
+                            "export-templates"
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "body": "{\n  \"data\": [\n    {\n      \"id\": \"string\",\n      \"name\": \"string\",\n      \"columns\": [\n        \"amount\",\n        \"date\"\n      ],\n      \"dateFormat\": \"MM/DD/YYYY\",\n      \"delimiter\": \"\\t\",\n      \"includeHeaders\": true\n    },\n    {\n      \"id\": \"string\",\n      \"name\": \"string\",\n      \"columns\": [\n        \"externalId\",\n        \"category\"\n      ],\n      \"dateFormat\": \"MM/DD/YYYY\",\n      \"delimiter\": \";\",\n      \"includeHeaders\": true\n    }\n  ]\n}"
+                    }
+                  ]
+                },
+                {
+                  "name": "Save a column layout as a template",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{bearerToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"string\",\n  \"columns\": [\n    \"status\"\n  ],\n  \"dateFormat\": \"YYYY-MM-DD\",\n  \"delimiter\": \",\",\n  \"includeHeaders\": true\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/api/v1/export-templates",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "v1",
+                        "export-templates"
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "name": "201",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"name\": \"string\",\n  \"columns\": [\n    \"status\"\n  ],\n  \"dateFormat\": \"YYYY-MM-DD\",\n  \"delimiter\": \",\",\n  \"includeHeaders\": true\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/api/v1/export-templates",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "v1",
+                            "export-templates"
+                          ]
+                        }
+                      },
+                      "status": "Created",
+                      "code": 201,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "body": "{\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"columns\": [\n    \"category\",\n    \"externalId\"\n  ],\n  \"dateFormat\": \"DD/MM/YYYY\",\n  \"delimiter\": \";\",\n  \"includeHeaders\": false\n}"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "users",
+              "item": [
+                {
+                  "name": "me",
+                  "item": [
+                    {
+                      "name": "avatar",
+                      "item": [
+                        {
+                          "name": "Upload a profile photo (PNG, JPEG or WebP, max 2 MB)",
+                          "request": {
+                            "auth": {
+                              "type": "bearer",
+                              "bearer": [
+                                {
+                                  "key": "token",
+                                  "value": "{{bearerToken}}",
+                                  "type": "string"
+                                }
+                              ]
+                            },
+                            "method": "PUT",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "multipart/form-data"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "body": {
+                              "mode": "formdata",
+                              "formdata": [
+                                {
+                                  "key": "avatar",
+                                  "type": "file",
+                                  "value": null
+                                }
+                              ]
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/api/v1/users/me/avatar",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "v1",
+                                "users",
+                                "me",
+                                "avatar"
+                              ]
+                            }
+                          },
+                          "response": [
+                            {
+                              "name": "200",
+                              "originalRequest": {
+                                "method": "PUT",
+                                "header": [
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "multipart/form-data"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: bearer",
+                                    "key": "Authorization",
+                                    "value": "Bearer <token>"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "formdata",
+                                  "formdata": [
+                                    {
+                                      "key": "avatar",
+                                      "type": "file",
+                                      "src": []
+                                    }
+                                  ]
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/api/v1/users/me/avatar",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "api",
+                                    "v1",
+                                    "users",
+                                    "me",
+                                    "avatar"
+                                  ]
+                                }
+                              },
+                              "status": "OK",
+                              "code": 200,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "body": "{\n  \"id\": \"string\",\n  \"externalId\": [\n    \"string\",\n    \"string\"\n  ],\n  \"email\": \"W.X+Gc.9l.c4t_Nw.Yv+aEF2.AG.jw.JlzQbAr3dP-.wW++Ei@tZpUOR0v5.A1ImLpcRyBu.uf1RAhRlx.mB.m.jm.mGveUOXCC.Uq4G.GioYEXUlKKGb\",\n  \"name\": \"string\",\n  \"avatarUrl\": \"string\",\n  \"role\": \"admin\"\n}"
+                            }
+                          ]
+                        },
+                        {
+                          "name": "Remove your profile photo and go back to the generated avatar",
+                          "request": {
+                            "auth": {
+                              "type": "bearer",
+                              "bearer": [
+                                {
+                                  "key": "token",
+                                  "value": "{{bearerToken}}",
+                                  "type": "string"
+                                }
+                              ]
+                            },
+                            "method": "DELETE",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/v1/users/me/avatar",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "v1",
+                                "users",
+                                "me",
+                                "avatar"
+                              ]
+                            }
+                          },
+                          "response": [
+                            {
+                              "name": "200",
+                              "originalRequest": {
+                                "method": "DELETE",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: bearer",
+                                    "key": "Authorization",
+                                    "value": "Bearer <token>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/api/v1/users/me/avatar",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "api",
+                                    "v1",
+                                    "users",
+                                    "me",
+                                    "avatar"
+                                  ]
+                                }
+                              },
+                              "status": "OK",
+                              "code": 200,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "body": "{\n  \"id\": \"string\",\n  \"externalId\": [\n    \"string\",\n    \"string\"\n  ],\n  \"email\": \"W.X+Gc.9l.c4t_Nw.Yv+aEF2.AG.jw.JlzQbAr3dP-.wW++Ei@tZpUOR0v5.A1ImLpcRyBu.uf1RAhRlx.mB.m.jm.mGveUOXCC.Uq4G.GioYEXUlKKGb\",\n  \"name\": \"string\",\n  \"avatarUrl\": \"string\",\n  \"role\": \"admin\"\n}"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "name": "Change your display name",
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{bearerToken}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "PATCH",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"name\": \"string\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/api/v1/users/me",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "v1",
+                            "users",
+                            "me"
+                          ]
+                        }
+                      },
+                      "response": [
+                        {
+                          "name": "200",
+                          "originalRequest": {
+                            "method": "PATCH",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"name\": \"string\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/api/v1/users/me",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "v1",
+                                "users",
+                                "me"
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "body": "{\n  \"id\": \"string\",\n  \"externalId\": [\n    \"string\",\n    \"string\"\n  ],\n  \"email\": \"W.X+Gc.9l.c4t_Nw.Yv+aEF2.AG.jw.JlzQbAr3dP-.wW++Ei@tZpUOR0v5.A1ImLpcRyBu.uf1RAhRlx.mB.m.jm.mGveUOXCC.Uq4G.GioYEXUlKKGb\",\n  \"name\": \"string\",\n  \"avatarUrl\": \"string\",\n  \"role\": \"admin\"\n}"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "name": "{id}",
+                  "item": [
+                    {
+                      "name": "avatar",
+                      "item": [
+                        {
+                          "name": "A user profile photo",
+                          "request": {
+                            "method": "GET",
+                            "header": [],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/v1/users/:id/avatar",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "v1",
+                                "users",
+                                ":id",
+                                "avatar"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id",
+                                  "value": "string"
+                                }
+                              ]
+                            }
+                          },
+                          "response": [
+                            {
+                              "name": "200",
+                              "originalRequest": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                  "raw": "{{baseUrl}}/api/v1/users/:id/avatar",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "api",
+                                    "v1",
+                                    "users",
+                                    ":id",
+                                    "avatar"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "id",
+                                      "value": "string"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "OK",
+                              "code": 200,
+                              "_postman_previewlanguage": "text",
+                              "header": [],
+                              "cookie": [],
+                              "body": ""
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "name": "Everyone who owns transactions, for the user filter",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{bearerToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/api/v1/users",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "v1",
+                        "users"
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "name": "200",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/v1/users",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "v1",
+                            "users"
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "body": "{\n  \"data\": [\n    {\n      \"id\": \"string\",\n      \"externalId\": null,\n      \"name\": \"string\",\n      \"avatarUrl\": \"string\"\n    },\n    {\n      \"id\": \"string\",\n      \"externalId\": \"string\",\n      \"name\": \"string\",\n      \"avatarUrl\": \"string\"\n    }\n  ]\n}"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "/"
+    }
+  ]
+}
